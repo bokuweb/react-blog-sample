@@ -1,0 +1,61 @@
+<% extend 'layout' %>
+    <section id="hero" class="hero">
+        <% include 'sticky-header' %>
+        <div class="container" ng-class="{'sp-container-slide':main.isMenuShown}" ng-hide="main.isTermShown">
+             <div class="row">
+                 <div id="crumbs" class="animated fadeInUp">
+                     <ul>
+                         <li><a href="#">ホーム</a></li>
+                         <li ng-show="main.store"><a href="#{{main.crumbsHref.store}}">>  {{main.store}}</a></li>
+                         <li ng-show="main.category"><a href="#{{main.crumbsHref.category}}">>  {{main.category}}</a></li>
+                         <li ng-show="main.author"><a href="#{{main.crumbsHref.author}}">> {{main.author}}</a></li>
+                     </ul>
+                 </div>
+              </div>
+              <div class="row">
+                 <div class="col-md-3 animated fadeInUp item" ng-repeat="item in main.items">
+                     <div class="image-wrapper" ng-show="item.url">
+                         <div class="before-load" ng-class="{'loaded':item.loaded}">
+                             <a ng-href="{{item.url}}"><img ng-src="{{item.image.medium}}" class="book-image" img-onload="main.onLoadedImage(item)"></a>
+                         </div>
+                     </div>
+                     <div class="item-description" ng-show="item.loaded">
+                         <a ng-href="{{item.url}}" class="item-title"><span class="item-title">{{item.shortenTitle}}</span></a><span class="new" ng-show="item.isNew">new</span><br>
+                         <a ng-href="#store={{item.store}}">{{item.store}}</a><br>
+                         <a ng-href="#{{main.categoryHref}}category={{item.category}}" class="item-category">{{item.category}}</a><br>
+                         <a ng-href="#{{main.authorHref}}author={{item.author}}">{{item.shortenAuthor}}</a><br>
+                         <span>¥0</span><br>
+                     </div>
+                     <div class="circle-spinner" ng-hide="item.loaded">
+                         <div class="double-bounce1"></div>
+                         <div class="double-bounce2"></div>
+                     </div>
+                 </div>
+             </div>
+             <div class="row" ng-show="main.isLoading">
+                 <div class="col-md-8 col-md-offset-2 text-center inner">
+                     <div class="rect-spinner"></div>
+                 </div>
+             </div>
+             <div class="row" ng-hide="main.hasItems">
+                 <div class="col-md-8 col-md-offset-2 text-center inner animated fadeInDown">
+                     <div class="no-items"><p>該当する検索結果がありません</P></div>
+                 </div>
+             </div>
+         </div>
+         <div id="term-of-service" class="animated fadeInUp" ng-show="main.isTermShown">
+             <div class="container">
+                 <i class="fa fa-times close-term" ng-click="main.isTermShown = false"></i>
+                 <h3>利用規約</h3>
+                 <p>本利用規約は、bokuweb(Twitter: @bokuwebが提供するWebを利用した本サイト上で提供される各種サービス・コンテンツ等 （これらを総称して以下「本サービス等」といいます。）の利用に対して適用されるものです。
+                 </p>
+                 <p>本サービスは技術上もしくは営業上のやむを得ない事情により、事前に通知することなしに終了する場合があります。</p>
+                 <p>当ウェブサイトまたは当ウェブサイトに掲載されたコンテンツを利用したこと、または利用できなかったことにより生じるいかなる損害についても責任を負いかねます。</p>
+                 <p>また、当社は当ウェブサイト以外のリンク元・リンク先に関し一切の責任を負いません。</p>
+             </div>
+         </div>
+    </section>
+ 
+    <% include 'right-menu' %>
+
+
