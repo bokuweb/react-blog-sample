@@ -24,17 +24,25 @@ CommentList = React.createClass
 CommentForm = React.createClass
   handleSubmit : (e) ->
     e.preventDefault()
+    title = React.findDOMNode(@refs.title).value.trim()
     author = React.findDOMNode(@refs.author).value.trim()
     text = React.findDOMNode(@refs.text).value.trim()
     return if not text or not author
+    @props.onCommentSubmit
+      title : title
+      author: author
+      text: text
+      createdAt : new Date()
+      updatedAt : new Date()
 
-    @props.onCommentSubmit {author: author, text: text}
+    React.findDOMNode(@refs.title).value = ''
     React.findDOMNode(@refs.author).value = ''
     React.findDOMNode(@refs.text).value = ''
     return
 
   render : ->
     <form className="commentForm" onSubmit={@handleSubmit}>
+      <input type="text" placeholder="Say something..." ref="title" />
       <input type="text" placeholder="Your name" ref="author" />
       <input type="text" placeholder="Say something..." ref="text" />
       <input type="submit" value="Post" />
@@ -52,17 +60,17 @@ CommentBox = React.createClass
       error : (xhr, status, err) =>
         console.error @props.url, status, err.toString()
 
-  handleCommentSubmit : (comment) ->
-    comments = @state.data
-    newComments = comments.concat [comment]
-    @setState {data: newComments}
+  handleCommentSubmit : (article) ->
+    articles = @state.data
+    newArticles = articles.concat [article]
+    @setState {data: newArticles}
     $.ajax
-      url: @props.url
+      url: "/api/v1/save"
       dataType: 'json'
       type: 'POST'
-      data: comment
-      success: (data) ->
-        @setState {data: data}
+      data: article
+      #success: (data) ->
+      #  @setState {data: data}
       error : (xhr, status, err) ->
         console.error(@props.url, status, err.toString())
 
@@ -80,7 +88,7 @@ CommentBox = React.createClass
     </div>
 
 React.render(
-  <CommentBox url="http://127.0.0.1:8080/comments.json" pollInterval={5000} />,
+  <CommentBox url="/api/v1/read" pollInterval={5000} />,
   document.getElementById('content')
 )
 

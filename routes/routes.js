@@ -1,11 +1,13 @@
 (function() {
-  var config, configRoutes, express, mongoURL, mongoose, router;
+  var DBManager, blogDB, config, configRoutes, express, mongoURL, mongoose, router;
 
   express = require('express');
 
   mongoose = require('mongoose');
 
   config = require('config');
+
+  DBManager = require('../model/dbManager');
 
   router = express.Router();
 
@@ -24,33 +26,30 @@
     });
   });
 
-
-  /*
-  ebooksDB = new EbookDBManager 'ebook',
-    title       : String
-    author      : String
-    url         : String
-    #node        : String
-    category    : String
-    #isbn        : String
-    store       : String
-    createdAt   : Date
-    updatedAt   : Date
-    #hasLimit    : Boolean # 期間限定商品?
-    canDownload : Boolean
-    isEnable    : Boolean
-    image       :
-      small  : String
-      medium : String
-      large  : String
-  
-  scheduler = new CrawlScheduler ebooksDB
-  scheduler.start()
-   */
+  blogDB = new DBManager('blog', {
+    title: String,
+    text: String,
+    author: String,
+    createdAt: Date,
+    updatedAt: Date
+  });
 
   configRoutes = function(app) {
-    app.get('/', function(req, res, next) {
+    app.get('/', function(req, res) {
       return res.render('index', {});
+    });
+    app.post('/api/v1/save', function(req, res) {
+      console.dir(req.body);
+      blogDB.save(req.body);
+      return res.json(req.body);
+    });
+    app.get('/api/v1/read', function(req, res) {
+      return blogDB.read().then((function(_this) {
+        return function(docs) {
+          console.log(docs);
+          return res.json(docs);
+        };
+      })(this));
     });
     if (app.get('env' === 'development')) {
       app.use(function(err, req, res, next) {

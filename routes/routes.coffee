@@ -1,6 +1,7 @@
 express        = require 'express'
 mongoose       = require 'mongoose'
 config         = require 'config'
+DBManager      = require '../model/dbManager'
 
 router   = express.Router()
 
@@ -15,32 +16,29 @@ process.on 'SIGINT', ->
     console.log 'Mongoose disconnected on app termination'
     process.exit 0
 
-###
-ebooksDB = new EbookDBManager 'ebook',
+blogDB = new DBManager 'blog',
+  #id          : Number
   title       : String
+  text        : String
   author      : String
-  url         : String
-  #node        : String
-  category    : String
-  #isbn        : String
-  store       : String
   createdAt   : Date
   updatedAt   : Date
-  #hasLimit    : Boolean # 期間限定商品?
-  canDownload : Boolean
-  isEnable    : Boolean
-  image       :
-    small  : String
-    medium : String
-    large  : String
-
-scheduler = new CrawlScheduler ebooksDB
-scheduler.start()
-###
 
 configRoutes = (app) ->
-  app.get '/', (req, res, next) ->
+  app.get '/', (req, res) ->
     res.render 'index', {}
+
+  app.post '/api/v1/save', (req, res) ->
+    console.dir req.body
+    blogDB.save req.body
+    #res.render 'index', {}
+    res.json req.body
+
+  app.get '/api/v1/read', (req, res) ->
+    blogDB.read()
+      .then (docs) =>
+        console.log docs
+        res.json docs
 
   # development error handler
   # will print stacktrace
