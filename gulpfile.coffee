@@ -4,24 +4,17 @@ plumber  = require 'gulp-plumber'
 stylus   = require 'gulp-stylus'
 watchify = require 'gulp-watchify'
 rename   = require 'gulp-rename'
-uglify   = require 'gulp-uglify'
 
 watching = off
 
 gulp.task 'enable-watch-mode', -> watching = on
 
-gulp.task 'minify', ->
-  gulp.src 'public/dist/app.js'
-    .pipe rename {suffix: '.min'}
-    .pipe uglify {mangle: false}
-    .pipe gulp.dest 'public/dist'
-
 gulp.task 'build:front', watchify (watchify) ->
-  gulp.src 'main.cjsx'
+  gulp.src 'public/src/coffee/main.coffee'
     .pipe plumber()
     .pipe watchify
       watch     : watching
-      extensions: ['.coffee', '.js']
+      extensions: ['.coffee', '.js', '.cjsx']
       transform : ['coffee-reactify']
     .pipe rename
       extname: ".js"
