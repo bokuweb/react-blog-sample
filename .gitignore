@@ -1,1 +1,5 @@
 node_modules/
+routes/routes.js
+public/dist/main.js
+data/
+*.js
