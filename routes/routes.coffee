@@ -16,7 +16,7 @@ process.on 'SIGINT', ->
     console.log 'Mongoose disconnected on app termination'
     process.exit 0
 
-blogDB = new DBManager 'blog',
+articleDB = new DBManager 'blog',
   #id          : Number
   title       : String
   text        : String
@@ -31,7 +31,7 @@ configRoutes = (app, passport) ->
 
   app.post '/api/v1/save', (req, res) ->
     console.dir req.body
-    blogDB.save req.body
+    articleDB.save req.body
     res.json req.body
 
   app.post '/api/v1/delete/:id', (req, res) ->
@@ -39,11 +39,11 @@ configRoutes = (app, passport) ->
     # retrun unless req.session.passport.user
     {id} = req.params
     return unless id
-    blogDB.delete id
+    articleDB.delete id
     res.json req.body
 
   app.get '/api/v1/read', (req, res) ->
-    blogDB.read()
+    articleDB.read()
       .then (docs) =>
         console.log docs
         res.json docs
