@@ -1,5 +1,58 @@
-React = require 'react'
+window.React ?= require 'react'
+Fluxxor       = require 'fluxxor'
 
+constants =
+  POST_ARTICLE   : "POST_ARTICLE"
+  FETCH_ARTICLES : "FETCH_ARTICLES"
+
+# Store
+ArticlesStore = Fluxxor.createStore
+  initialize : ->
+    @articles = []
+    @bindActions constants.FETCH_ARTICLES, @onFetchArticles
+    @bindActions constants.POST_ARTICLE, @onUpdateArticles
+
+  onFetchArticles : (payload) ->
+    @articles = payload.articles
+    @emit "change"
+
+  onUpdateArticles : (payload) ->
+    @articles = [payload.article].concat @articles
+    @emit "change"
+
+  getState : ->
+    {articles : @articles}
+
+# Action
+actions =
+  fetchArticles : ->
+    console.log "read"
+    $.ajax
+      url: "/api/v1/read"
+      dataType: 'json'
+      cache: false
+      success: (articles) =>
+        console.dir articles
+        @dispatch constants.FETCH_ARTICLES, {articles : articles}
+      error : (xhr, status, err) =>
+        console.error "/api/v1/read", status, err.toString()
+
+  saveArticle : (article) ->
+    $.ajax
+      url: "/api/v1/save"
+      dataType: 'json'
+      type: 'POST'
+      data: article
+      success: (article) =>
+        @dispatch constants.POST_ARTICLE, {article : article}
+      error : (xhr, status, err) ->
+        console.error "/api/v1/save", status, err.toString()
+
+# Mixin
+FluxMixin = Fluxxor.FluxMixin React
+StoreWatchMixin = Fluxxor.StoreWatchMixin
+
+# View
 Comment = React.createClass
   render : ->
     rawMarkup = marked(@props.children.toString(), {sanitize: true})
@@ -12,7 +65,7 @@ Comment = React.createClass
 
 CommentList = React.createClass
   render : ->
-    commentNodes = @props.data.map (comment) ->
+    commentNodes = @props.articles.map (comment) ->
       <Comment author={comment.author}>
         {comment.text}
       </Comment>
@@ -22,23 +75,24 @@ CommentList = React.createClass
     </div>
 
 CommentForm = React.createClass
+  mixins : [FluxMixin]
   handleSubmit : (e) ->
     e.preventDefault()
     title = React.findDOMNode(@refs.title).value.trim()
     author = React.findDOMNode(@refs.author).value.trim()
     text = React.findDOMNode(@refs.text).value.trim()
-    return if not text or not author
-    @props.onCommentSubmit
+    return if not text or not author or not title
+    #@props.onCommentSubmit
+    article =
       title : title
       author: author
       text: text
       createdAt : new Date()
       updatedAt : new Date()
-
     React.findDOMNode(@refs.title).value = ''
     React.findDOMNode(@refs.author).value = ''
     React.findDOMNode(@refs.text).value = ''
-    return
+    @getFlux().actions.saveArticle article
 
   render : ->
     <form className="commentForm" onSubmit={@handleSubmit}>
@@ -49,46 +103,27 @@ CommentForm = React.createClass
     </form>
 
 CommentBox = React.createClass
-  loadCommentsFromServer : ->
-    $.ajax
-      url: @props.url
-      dataType: 'json'
-      cache: false
-      success: (data) =>
-        console.dir data
-        @setState {data: data}
-      error : (xhr, status, err) =>
-        console.error @props.url, status, err.toString()
+  mixins : [FluxMixin, StoreWatchMixin "ArticlesStore"]
 
-  handleCommentSubmit : (article) ->
-    articles = @state.data
-    newArticles = articles.concat [article]
-    @setState {data: newArticles}
-    $.ajax
-      url: "/api/v1/save"
-      dataType: 'json'
-      type: 'POST'
-      data: article
-      #success: (data) ->
-      #  @setState {data: data}
-      error : (xhr, status, err) ->
-        console.error(@props.url, status, err.toString())
-
-  getInitialState : -> {data: []}
+  getStateFromFlux : ->
+    @getFlux().store("ArticlesStore").getState()
 
   componentDidMount : ->
-    @loadCommentsFromServer()
-    setInterval this.loadCommentsFromServer, @props.pollInterval
+    console.log "didmount"
+    @getFlux().actions.fetchArticles()
 
   render : ->
     <div className="commentBox">
       <h1>Comments</h1>
-        <CommentList data={@state.data} />
-        <CommentForm onCommentSubmit={@handleCommentSubmit} />
+        <CommentList articles = {@state.articles} />
+        <CommentForm onCommentSubmit = {@handleCommentSubmit} />
     </div>
 
+stores = {ArticlesStore : new ArticlesStore()}
+flux = new Fluxxor.Flux stores, actions
+
 React.render(
-  <CommentBox url="/api/v1/read" pollInterval={5000} />,
+  <CommentBox flux = {flux} />,
   document.getElementById('content')
 )
 
