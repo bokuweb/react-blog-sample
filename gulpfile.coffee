@@ -28,11 +28,11 @@ gulp.task 'build:server', ->
     .pipe gulp.dest ''
 
 gulp.task 'build:stylus', ->
-  gulp.src 'public/styl/*.styl'
+  gulp.src 'public/styl/main.styl'
     .pipe plumber()
     .pipe stylus
       compress: true
-    .pipe gulp.dest 'public/css'
+    .pipe gulp.dest 'public/stylesheets'
 
 gulp.task 'watch', ['enable-watch-mode', 'build:front'], ->
   gulp.watch ['*.coffee', '*/*.coffee'], ['build:server']
