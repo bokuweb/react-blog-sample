@@ -3,3 +3,4 @@ routes/routes.js
 public/dist/main.js
 data/
 *.js
+public/stylesheets/
