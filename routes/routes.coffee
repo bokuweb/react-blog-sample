@@ -24,7 +24,7 @@ blogDB = new DBManager 'blog',
   createdAt   : Date
   updatedAt   : Date
 
-configRoutes = (app) ->
+configRoutes = (app, passport) ->
   app.get '/', (req, res) ->
     res.render 'index', {}
 
@@ -34,11 +34,31 @@ configRoutes = (app) ->
     #res.render 'index', {}
     res.json req.body
 
+  app.post '/api/v1/delete/:id', (req, res) ->
+    # retrun unless req.user
+    {id} = req.params
+    return unless id
+    blogDB.delete id
+    #res.render 'index', {}
+    res.json req.body
+
   app.get '/api/v1/read', (req, res) ->
     blogDB.read()
       .then (docs) =>
         console.log docs
         res.json docs
+
+  app.get '/login', passport.authenticate('twitter')
+
+  app.get '/login/return',
+    passport.authenticate 'twitter', { failureRedirect: '/login' },
+    (req, res) =>
+      res.redirect('/')
+
+  app.get '/profile',
+    require('connect-ensure-login').ensureLoggedIn(),
+    (req, res) =>
+      res.render 'profile', { user: req.user }
 
   # development error handler
   # will print stacktrace

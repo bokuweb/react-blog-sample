@@ -61,15 +61,7 @@ class DBManager
     if store? and store isnt " "
       store = @_pregQuote store
       condition.push {store : new RegExp store, "i"}
-    ###
-    else if word?
-      if condition[0]?
-        authorCondition = for w in words when w isnt '' then {author : new RegExp w, "i"}
-        if authorCondition.length is 1
-          condition[0] = {$or : [condition[0], authorCondition[0]]}
-        else if authorCondition.length > 1
-          condition[0] = {$or : [condition[0], {$and : authorCondition}]}
-    ###
+
     if category? and category isnt " "
       category = @_pregQuote category
       condition.push {category : new RegExp category, "i"}
@@ -93,10 +85,9 @@ class DBManager
       .exec (err, docs) -> d.resolve docs
     d.promise
 
-
-  removeStore : (storeName) ->
+  delete : (id) ->
     d = Q.defer()
-    @_Model.remove {store: storeName}, (err) ->
+    @_Model.remove {__id: id}, (err) ->
       if err then d.reject err
       else d.resolve()
     d.promise
