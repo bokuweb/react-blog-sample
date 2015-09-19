@@ -24,14 +24,22 @@ blogDB = new DBManager 'blog',
   createdAt   : Date
   updatedAt   : Date
 
-configRoutes = (app) ->
+configRoutes = (app, passport) ->
   app.get '/', (req, res) ->
+    console.dir req.user
     res.render 'index', {}
 
   app.post '/api/v1/save', (req, res) ->
     console.dir req.body
     blogDB.save req.body
-    #res.render 'index', {}
+    res.json req.body
+
+  app.post '/api/v1/delete/:id', (req, res) ->
+    # TODO : auth
+    # retrun unless req.session.passport.user
+    {id} = req.params
+    return unless id
+    blogDB.delete id
     res.json req.body
 
   app.get '/api/v1/read', (req, res) ->
@@ -39,6 +47,25 @@ configRoutes = (app) ->
       .then (docs) =>
         console.log docs
         res.json docs
+
+  app.get '/api/v1/profile', (req, res) ->
+    console.dir req.session.passport.user
+    if req.session.passport.user?
+      res.json req
+    else
+      res.json {error : "not authenticated"}
+
+  app.get '/login', passport.authenticate('twitter')
+
+  app.get '/login/callback', passport.authenticate('twitter',
+      successRedirect: '/'
+      failureRedirect: '/'
+  )
+
+  app.get '/logout', (req, res) ->
+    req.session.destroy()
+    req.logout()
+    res.redirect('/')
 
   # development error handler
   # will print stacktrace
