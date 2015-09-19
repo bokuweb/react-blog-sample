@@ -1,0 +1,5 @@
+{
+  "consumerKey"    : "k6ofORiLZLrzKfa2qGq5BxVav",
+  "consumerSecret" : "1sHp5v8te5ioR8NeuJKhtQy83JVwi6OWh5rWQnAjVtgCscZpFJ",
+  "callbackURL"    : "http://127.0.0.1:8080/login/callback"
+}

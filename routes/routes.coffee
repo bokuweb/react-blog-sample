@@ -26,20 +26,20 @@ blogDB = new DBManager 'blog',
 
 configRoutes = (app, passport) ->
   app.get '/', (req, res) ->
+    console.dir req.user
     res.render 'index', {}
 
   app.post '/api/v1/save', (req, res) ->
     console.dir req.body
     blogDB.save req.body
-    #res.render 'index', {}
     res.json req.body
 
   app.post '/api/v1/delete/:id', (req, res) ->
-    # retrun unless req.user
+    # TODO : auth
+    # retrun unless req.session.passport.user
     {id} = req.params
     return unless id
     blogDB.delete id
-    #res.render 'index', {}
     res.json req.body
 
   app.get '/api/v1/read', (req, res) ->
@@ -48,17 +48,24 @@ configRoutes = (app, passport) ->
         console.log docs
         res.json docs
 
+  app.get '/api/v1/profile', (req, res) ->
+    console.dir req.session.passport.user
+    if req.session.passport.user?
+      res.json req
+    else
+      res.json {error : "not authenticated"}
+
   app.get '/login', passport.authenticate('twitter')
 
-  app.get '/login/return',
-    passport.authenticate 'twitter', { failureRedirect: '/login' },
-    (req, res) =>
-      res.redirect('/')
+  app.get '/login/callback', passport.authenticate('twitter',
+      successRedirect: '/'
+      failureRedirect: '/'
+  )
 
-  app.get '/profile',
-    require('connect-ensure-login').ensureLoggedIn(),
-    (req, res) =>
-      res.render 'profile', { user: req.user }
+  app.get '/logout', (req, res) ->
+    req.session.destroy()
+    req.logout()
+    res.redirect('/')
 
   # development error handler
   # will print stacktrace
