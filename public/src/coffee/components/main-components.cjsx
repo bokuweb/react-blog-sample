@@ -15,7 +15,7 @@ Comment = React.createClass
 CommentList = React.createClass
   render : ->
     commentNodes = @props.articles.map (comment) ->
-      <Comment author={comment.author}>
+      <Comment author={comment.author} key={comment._id}>
         {comment.text}
       </Comment>
 
@@ -78,6 +78,14 @@ CommentBox = React.createClass
       </div>
     </div>
 
+GuestProfile = React.createClass
+  render : ->
+    <div id="profile">
+      <img src={@props.avatarImage} className="avatar" />
+      <p className="please-login">Hello!!<br />Plaese login to edit this blog</p>
+      <a href="./login" className="button-login">Login</a>
+    </div>
+
 SideMenu = React.createClass
   mixins : [FluxMixin]
 
@@ -85,8 +93,15 @@ SideMenu = React.createClass
     @getFlux().actions.profile.fetchProfile()
 
   render : ->
-    <div>
-      <span>aaaa</span>
-    </div>
+    if @props.profile.error
+      <GuestProfile avatarImage = {"image/guest.png"} />
+    else
+      <div>
+        <span>
+          {@props.profile.id}
+        </span>
+        <span>asdas</span>
+      </div>
+
 
 module.exports = CommentBox

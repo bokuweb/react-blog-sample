@@ -1,4 +1,5 @@
 @import 'vendor'
+@import 'profile'
 
 side-menu-width-pc = 300px
 
@@ -6,6 +7,11 @@ html, body
   height 100%
   padding 0
   margin 0
+  -webkit-text-size-adjust 100%
+  -ms-text-size-adjust 100%
+
+html, a
+  -webkit-font-smoothing  antialiased text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
 
 #container
   height 100%
@@ -18,7 +24,7 @@ html, body
   vendor('box-orient', horizontal)
 
 #side-menu
-  background #037E8C
+  background #A5ECFA
   width side-menu-width-pc
   -ms-flex 0 side-menu-width
   vendor('box-flex', 0)
@@ -28,6 +34,7 @@ html, body
   vendor('box-flex', 1)
   overflow-y auto
   max-height 100%
+  background #FAF7F3
 
 @media screen and (max-width 768px)
   #container
@@ -35,6 +42,5 @@ html, body
     vendor('box-orient', vertical)
 
   #side-menu
-    background #037E8C
     width 100%
     -ms-flex 0 100%
