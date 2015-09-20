@@ -1,13 +1,22 @@
-window.React  = require 'react'
-Fluxxor       = require 'fluxxor'
-ArticlesStore = require './stores/article-store'
-actions       = require './actions/articles-actions'
-CommentBox    = require './components/main-components'
+window.React   = require 'react'
+Fluxxor        = require 'fluxxor'
+ArticlesStore  = require './stores/article-store'
+ProfileStore   = require './stores/profile-store'
+articleActions = require './actions/articles-actions'
+profileActions = require './actions/profile-actions'
+CommentBox     = require './components/main-components'
 
-stores = {ArticlesStore : new ArticlesStore()}
+stores =
+  ArticlesStore : new ArticlesStore()
+  ProfileStore  : new ProfileStore()
+
+actions =
+  article : articleActions
+  profile : profileActions
+
 flux = new Fluxxor.Flux stores, actions
 
 React.render(
   <CommentBox flux = {flux} />,
-  document.getElementById('content')
+  document.body
 )

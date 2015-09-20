@@ -15,7 +15,7 @@ ArticlesStore = Fluxxor.createStore
     @articles = [payload.article].concat @articles
     @emit "change"
 
-  getState : ->
+  getArticles : ->
     {articles : @articles}
 
 module.exports = ArticlesStore

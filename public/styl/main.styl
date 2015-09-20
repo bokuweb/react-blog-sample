@@ -22,10 +22,12 @@ html, body
   width side-menu-width-pc
   -ms-flex 0 side-menu-width
   vendor('box-flex', 0)
-  
+
 #content
   -ms-flex 1
   vendor('box-flex', 1)
+  overflow-y auto
+  max-height 100%
 
 @media screen and (max-width 768px)
   #container

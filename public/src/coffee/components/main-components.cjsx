@@ -31,7 +31,6 @@ CommentForm = React.createClass
     author = React.findDOMNode(@refs.author).value.trim()
     text = React.findDOMNode(@refs.text).value.trim()
     return if not text or not author or not title
-    #@props.onCommentSubmit
     article =
       title : title
       author: author
@@ -41,7 +40,7 @@ CommentForm = React.createClass
     React.findDOMNode(@refs.title).value = ''
     React.findDOMNode(@refs.author).value = ''
     React.findDOMNode(@refs.text).value = ''
-    @getFlux().actions.saveArticle article
+    @getFlux().actions.article.saveArticle article
 
   render : ->
     <form className="commentForm" onSubmit={@handleSubmit}>
@@ -52,19 +51,42 @@ CommentForm = React.createClass
     </form>
 
 CommentBox = React.createClass
-  mixins : [FluxMixin, StoreWatchMixin "ArticlesStore"]
+  mixins : [
+    FluxMixin
+    StoreWatchMixin "ArticlesStore", "ProfileStore"
+  ]
 
   getStateFromFlux : ->
-    @getFlux().store("ArticlesStore").getState()
-
+    flux = this.getFlux()
+    {
+      articleStore : flux.store("ArticlesStore").getArticles()
+      profileStore : flux.store("ProfileStore").getState()
+    }
   componentDidMount : ->
-    @getFlux().actions.fetchArticles()
+    @getFlux().actions.article.fetchArticles()
 
   render : ->
-    <div className="commentBox">
-      <h1>Comments</h1>
-        <CommentList articles = {@state.articles} />
-        <CommentForm onCommentSubmit = {@handleCommentSubmit} />
+    <div id="container">
+      <div id="side-menu">
+        <SideMenu profile = {@state.profileStore.profile} />
+      </div>
+      <div id="content">
+        <div className="commentBox">
+          <CommentList articles = {@state.articleStore.articles} />
+          <CommentForm />
+        </div>
+      </div>
+    </div>
+
+SideMenu = React.createClass
+  mixins : [FluxMixin]
+
+  componentDidMount : ->
+    @getFlux().actions.profile.fetchProfile()
+
+  render : ->
+    <div>
+      <span>aaaa</span>
     </div>
 
 module.exports = CommentBox

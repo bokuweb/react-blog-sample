@@ -49,8 +49,7 @@ configRoutes = (app, passport) ->
         res.json docs
 
   app.get '/api/v1/profile', (req, res) ->
-    console.dir req.session.passport.user
-    if req.session.passport.user?
+    if req.session?.passport?.user?
       res.json req
     else
       res.json {error : "not authenticated"}
