@@ -68,6 +68,7 @@ CommentBox = React.createClass
   render : ->
     <div id="container">
       <div id="side-menu">
+        <img src="image/logo.png" className="logo" />
         <SideMenu
           profile = {@state.profileStore.profile},
           isFetching = {@state.profileStore.isFetching}
