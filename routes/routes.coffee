@@ -26,13 +26,14 @@ articleDB = new DBManager 'blog',
 
 configRoutes = (app, passport) ->
   app.get '/', (req, res) ->
-    console.dir req.user
     res.render 'index', {}
 
   app.post '/api/v1/save', (req, res) ->
-    console.dir req.body
-    articleDB.save req.body
-    res.json req.body
+    if req.session?.passport?.user?
+      articleDB.save req.body
+      res.json req.body
+    else
+      res.json null
 
   app.post '/api/v1/delete/:id', (req, res) ->
     # TODO : auth
@@ -43,15 +44,17 @@ configRoutes = (app, passport) ->
     res.json req.body
 
   app.get '/api/v1/read', (req, res) ->
-    articleDB.read()
+    articleDB.read {
+        sort : {'updatedAt':-1}
+        limit : 30
+      }
       .then (docs) =>
         console.log docs
         res.json docs
 
   app.get '/api/v1/profile', (req, res) ->
-    console.dir req.session.passport.user
-    if req.session.passport.user?
-      res.json req
+    if req.session?.passport?.user?
+      res.json req.session.passport.user
     else
       res.json {error : "not authenticated"}
 
