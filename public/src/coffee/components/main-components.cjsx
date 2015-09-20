@@ -2,50 +2,58 @@ Fluxxor         = require 'fluxxor'
 FluxMixin       = Fluxxor.FluxMixin React
 StoreWatchMixin = Fluxxor.StoreWatchMixin
 
-Comment = React.createClass
+Article = React.createClass
   render : ->
     rawMarkup = marked(@props.children.toString(), {sanitize: true})
-    <div className="comment">
-      <h2 className="commentAuthor">
-        {@props.author}
-      </h2>
+    avatarUrl = "http://gadgtwit.appspot.com/twicon/#{@props.author}/mini"
+    <div className="article">
+      <h1 className="title">
+        {@props.title}
+      </h1>
+      <div className="post-infomation">
+        <span className="author-name"><img src={avatarUrl} className="author-avatar-mini"/>{@props.author}</span>
+        <span className="created-at">created at {@props.createdAt}</span>
+      </div>
       <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
     </div>
 
-CommentList = React.createClass
+ArticleList = React.createClass
   render : ->
-    commentNodes = @props.articles.map (comment) ->
-      <Comment author={comment.author} key={comment._id}>
-        {comment.text}
-      </Comment>
+    if @props.articles.length >0
+      articleNodes = @props.articles.map (article) ->
+        <Article author={article.author}
+                 key={article._id}
+                 title={article.title}
+                 createdAt={article.createdAt}>
+          {article.text}
+        </Article>
 
-    <div className="commentList">
-      {commentNodes}
-    </div>
+      <div className="commentList">
+        {articleNodes}
+      </div>
+    else
+      <h1>There are yet no article...</h1>
 
 BlogForm = React.createClass
   mixins : [FluxMixin]
   handleSubmit : (e) ->
     e.preventDefault()
     title = React.findDOMNode(@refs.title).value.trim()
-    author = React.findDOMNode(@refs.author).value.trim()
     text = React.findDOMNode(@refs.text).value.trim()
-    return if not text or not author or not title
+    return if not text or not title or not @props.author?
     article =
       title     : title
-      author    : author
+      author    : @props.author
       text      : text
       createdAt : new Date()
       updatedAt : new Date()
     React.findDOMNode(@refs.title).value = ''
-    React.findDOMNode(@refs.author).value = ''
     React.findDOMNode(@refs.text).value = ''
     @getFlux().actions.article.saveArticle article
 
   render : ->
     <form className="commentForm" onSubmit={@handleSubmit}>
       <input type="text" placeholder="title..." ref="title" />
-      <input type="text" placeholder="Your name" ref="author" />
       <input type="text" placeholder="Say something..." ref="text" />
       <input type="submit" value="Post" />
     </form>
@@ -76,9 +84,9 @@ CommentBox = React.createClass
       </div>
       <div id="content">
         <div className="commentBox">
-          <BlogForm />
+          <BlogForm author={@state.profileStore.profile.username}/>
           <div id="articles">
-            <CommentList articles = {@state.articleStore.articles} />
+            <ArticleList articles={@state.articleStore.articles} />
           </div>
         </div>
       </div>
@@ -114,8 +122,9 @@ SideMenu = React.createClass
       if @props.profile.error?
         <GuestProfile avatarImage = {"image/guest.png"} />
       else
+        avatarUrl = "http://gadgtwit.appspot.com/twicon/#{@props.profile.username}/bigger"
         <UserProfile
-          avatarImage = {@props.profile.photos[0].value}
+          avatarImage = {avatarUrl}
           username = {@props.profile.username}
         />
 

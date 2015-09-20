@@ -9,10 +9,14 @@ html, body
   margin 0
   -webkit-text-size-adjust 100%
   -ms-text-size-adjust 100%
+  background #FAF7F3
 
 html, a
   -webkit-font-smoothing  antialiased text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
 
+h1
+  color #39AEC6
+  
 #container
   height 100%
   display -ms-flexbox
@@ -39,14 +43,17 @@ html, a
 #content
   -ms-flex 1
   vendor('box-flex', 1)
-  background #FAF7F3
   text-shadow -1px 1px 0 rgba(255, 255, 255, 1)
+  color #45828E
 
 #articles
   max-width 800px
   word-break break-all
-  padding 20px
+  padding 20px 30px 100px 30px
 
+.article
+  line-height 28px
+  margin 80px 0 0 0
 
 @media screen and (min-width 769px)
   #content
@@ -61,3 +68,15 @@ html, a
   #side-menu
     width 100%
     -ms-flex 0 100%
+
+.post-infomation
+  img.author-avatar-mini
+    width 20px
+    height 20px
+    border-radius 50%
+    margin 0 10px 0 0
+
+  span.author-name, span.created-at
+    font-size 80%
+    color #95A5A6
+    margin-right 20px
