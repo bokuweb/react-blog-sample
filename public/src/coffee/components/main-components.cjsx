@@ -68,7 +68,10 @@ CommentBox = React.createClass
   render : ->
     <div id="container">
       <div id="side-menu">
-        <SideMenu profile = {@state.profileStore.profile} />
+        <SideMenu
+          profile = {@state.profileStore.profile},
+          isFetching = {@state.profileStore.isFetching}
+         />
       </div>
       <div id="content">
         <div className="commentBox">
@@ -82,8 +85,17 @@ GuestProfile = React.createClass
   render : ->
     <div id="profile">
       <img src={@props.avatarImage} className="avatar" />
-      <p className="please-login">Hello!!<br />Plaese login to edit this blog</p>
+      <h2 className="greeting">Hello!!</h2>
+      <p className="please-login">Plaese login to edit this blog</p>
       <a href="./login" className="button-login">Login</a>
+    </div>
+
+UserProfile = React.createClass
+  render : ->
+    <div id="profile">
+      <img src={@props.avatarImage} className="avatar" />
+      <p className="please-login">Hello!! {@props.username}</p>
+      <a href="./logout" className="button-login">Logout</a>
     </div>
 
 SideMenu = React.createClass
@@ -93,15 +105,15 @@ SideMenu = React.createClass
     @getFlux().actions.profile.fetchProfile()
 
   render : ->
-    if @props.profile.error
-      <GuestProfile avatarImage = {"image/guest.png"} />
+    if @props.isFetching
+      <span></span>
     else
-      <div>
-        <span>
-          {@props.profile.id}
-        </span>
-        <span>asdas</span>
-      </div>
-
+      if @props.profile.error?
+        <GuestProfile avatarImage = {"image/guest.png"} />
+      else
+        <UserProfile
+          avatarImage = {@props.profile.photos[0].value}
+          username = {@props.profile.username}
+        />
 
 module.exports = CommentBox

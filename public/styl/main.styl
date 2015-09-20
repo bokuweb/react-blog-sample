@@ -32,9 +32,13 @@ html, a
 #content
   -ms-flex 1
   vendor('box-flex', 1)
-  overflow-y auto
-  max-height 100%
   background #FAF7F3
+  text-shadow -1px 1px 0 rgba(255, 255, 255, 1)
+
+@media screen and (min-width 769px)
+  #content
+    overflow-y auto
+    max-height 100%
 
 @media screen and (max-width 768px)
   #container
