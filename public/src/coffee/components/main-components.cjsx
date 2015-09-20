@@ -23,7 +23,7 @@ CommentList = React.createClass
       {commentNodes}
     </div>
 
-CommentForm = React.createClass
+BlogForm = React.createClass
   mixins : [FluxMixin]
   handleSubmit : (e) ->
     e.preventDefault()
@@ -32,9 +32,9 @@ CommentForm = React.createClass
     text = React.findDOMNode(@refs.text).value.trim()
     return if not text or not author or not title
     article =
-      title : title
-      author: author
-      text: text
+      title     : title
+      author    : author
+      text      : text
       createdAt : new Date()
       updatedAt : new Date()
     React.findDOMNode(@refs.title).value = ''
@@ -44,7 +44,7 @@ CommentForm = React.createClass
 
   render : ->
     <form className="commentForm" onSubmit={@handleSubmit}>
-      <input type="text" placeholder="Say something..." ref="title" />
+      <input type="text" placeholder="title..." ref="title" />
       <input type="text" placeholder="Your name" ref="author" />
       <input type="text" placeholder="Say something..." ref="text" />
       <input type="submit" value="Post" />
@@ -75,8 +75,10 @@ CommentBox = React.createClass
       </div>
       <div id="content">
         <div className="commentBox">
-          <CommentList articles = {@state.articleStore.articles} />
-          <CommentForm />
+          <BlogForm />
+          <div id="articles">
+            <CommentList articles = {@state.articleStore.articles} />
+          </div>
         </div>
       </div>
     </div>

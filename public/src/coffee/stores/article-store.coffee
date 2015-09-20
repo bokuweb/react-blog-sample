@@ -12,6 +12,7 @@ ArticlesStore = Fluxxor.createStore
     @emit "change"
 
   onUpdateArticles : (payload) ->
+    return unless payload.article?
     @articles = [payload.article].concat @articles
     @emit "change"
 
