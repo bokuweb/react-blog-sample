@@ -33,15 +33,23 @@ configRoutes = (app, passport) ->
       articleDB.save req.body
       res.json req.body
     else
-      res.json null
+      res.json {error : "not authenticated"}
 
-  app.post '/api/v1/delete/:id', (req, res) ->
-    # TODO : auth
-    # retrun unless req.session.passport.user
-    {id} = req.params
+  app.post '/api/v1/delete', (req, res) ->
+    return unless req.session?.passport?.user?
+    id = req.body.id
     return unless id
-    articleDB.delete id
-    res.json req.body
+    articleDB.findOneById id
+      .then (doc) =>
+        if doc.author is req.session.passport.user.username
+          articleDB.delete id
+           .then =>
+             res.json {error : null}
+           .fail (err) =>
+             console.dir err
+             res.json {error : "can't delete this article"}
+        else res.json {error : "can't delete this article"}
+      .fail => res.json {error : "can't find article"}
 
   app.get '/api/v1/read', (req, res) ->
     articleDB.read {

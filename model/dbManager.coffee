@@ -37,6 +37,13 @@ class DBManager
       .exec (err, docs) -> d.resolve docs
     d.promise
 
+  findOneById : (id) ->
+    d = Q.defer()
+    @_Model.findById id, (err, doc) ->
+      if err then d.reject err
+      else d.resolve doc
+    d.promise
+
   getItems : (params) ->
     {page, limit, sort, word, author} = params
     limit ?= 10
@@ -86,8 +93,9 @@ class DBManager
     d.promise
 
   delete : (id) ->
+    console.log "delete"
     d = Q.defer()
-    @_Model.remove {__id: id}, (err) ->
+    @_Model.remove {_id: id}, (err) ->
       if err then d.reject err
       else d.resolve()
     d.promise

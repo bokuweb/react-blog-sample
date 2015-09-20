@@ -3,6 +3,12 @@ FluxMixin       = Fluxxor.FluxMixin React
 StoreWatchMixin = Fluxxor.StoreWatchMixin
 
 Article = React.createClass
+  mixins : [FluxMixin]
+  handleDeleteClick : (e) ->
+    e.preventDefault()
+    console.log "click"
+    @getFlux().actions.article.deleteArticle @props.id
+
   render : ->
     rawMarkup = marked(@props.children.toString(), {sanitize: true})
     avatarUrl = "http://gadgtwit.appspot.com/twicon/#{@props.author}/mini"
@@ -15,6 +21,9 @@ Article = React.createClass
         <span className="created-at">created at {@props.createdAt}</span>
       </div>
       <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+      <div className="article-footer">
+        <a href="#" onClick={@handleDeleteClick}>Delete</a>
+      </div>
     </div>
 
 ArticleList = React.createClass
@@ -22,6 +31,7 @@ ArticleList = React.createClass
     if @props.articles.length >0
       articleNodes = @props.articles.map (article) ->
         <Article author={article.author}
+                 id={article._id}
                  key={article._id}
                  title={article.title}
                  createdAt={article.createdAt}>
@@ -58,7 +68,7 @@ BlogForm = React.createClass
       <input type="submit" value="Post" />
     </form>
 
-CommentBox = React.createClass
+Blog = React.createClass
   mixins : [
     FluxMixin
     StoreWatchMixin "ArticlesStore", "ProfileStore"
@@ -128,4 +138,4 @@ SideMenu = React.createClass
           username = {@props.profile.username}
         />
 
-module.exports = CommentBox
+module.exports = Blog
