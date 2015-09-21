@@ -94,8 +94,8 @@ h1
 
 
 
-a.button-delete
-  display block
+a.button-delete, a.button-edit
+  display inline-block
   width 40px
   border-radius 3px
   border solid 1px #FAF7F3
@@ -107,6 +107,21 @@ a.button-delete
   background #95A5A6
   text-shadow none
   font-size 12px
+  margin 0 10px 0 0
 
-a.button-delete:hover
+a.button-delete:hover, a.button-edit:hover
   background #A5ECFA
+
+
+.editor
+  background #ccc
+  height 0px
+  vendor('transition', all 0.5s ease)
+  overflow hidden
+
+.editing
+  height 300px
+
+.text-edit
+  width 98%
+  height 200px

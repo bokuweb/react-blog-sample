@@ -45,6 +45,17 @@ class DBManager
       else d.resolve doc
     d.promise
 
+  updateById : (id, doc) ->
+    d = Q.defer()
+    @_Model.findOneAndUpdate {_id : id}, doc
+      .exec (err, docs) ->
+        if err
+          console.log err
+          d.reject err
+        else
+          d.resolve()
+    d.promise
+
   getItems : (params) ->
     {page, limit, sort, word, author} = params
     limit ?= 10

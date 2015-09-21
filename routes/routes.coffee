@@ -35,6 +35,27 @@ configRoutes = (app, passport) ->
     else
       res.json {error : "not authenticated"}
 
+  # FIXME : refactoring
+  app.post '/api/v1/update', (req, res) ->
+    return unless req.session?.passport?.user?
+    console.dir req.body
+    id = req.body._id
+    return unless id
+    articleDB.findOneById id
+      .then (doc) =>
+        if doc.author is req.session.passport.user.username
+          console.log "update!!!!"
+          articleDB.updateById id, req.body
+           .then =>
+             res.json {error : null}
+           .fail (err) =>
+             console.dir err
+             res.json {error : "can't delete this article"}
+        else res.json {error : "can't delete this article"}
+      .fail => res.json {error : "can't find article"}
+
+
+  # FIXME : refactoring
   app.post '/api/v1/delete', (req, res) ->
     return unless req.session?.passport?.user?
     id = req.body.id

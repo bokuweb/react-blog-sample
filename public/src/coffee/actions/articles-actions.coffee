@@ -44,3 +44,23 @@ module.exports =
       error : (xhr, status, err) ->
         console.error "/api/v1/save", status, err.toString()
 
+  editArticle : (id) ->
+    @dispatch constants.EDIT_ARTICLE, {id : id}
+
+  changeTitle : (id, title) ->
+    @dispatch constants.CHANGE_TITLE, {id : id, title : title}
+
+  changeText : (id, text) ->
+    @dispatch constants.CHANGE_TEXT, {id : id, text : text}
+
+  updateArticle : (id, article) ->
+    $.ajax
+      url: "/api/v1/update"
+      dataType: 'json'
+      type: 'POST'
+      data: article
+      success: (res) =>
+        @dispatch constants.UPDATE_ARTICLE, {id : id, article : article}
+      error : (xhr, status, err) ->
+        console.error "/api/v1/update", status, err.toString()
+

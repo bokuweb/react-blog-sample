@@ -6,14 +6,37 @@ Article = React.createClass
   mixins : [FluxMixin]
   handleDeleteClick : (e) ->
     e.preventDefault()
-    console.log "click"
     @getFlux().actions.article.deleteArticle @props.article._id
+
+  handleEditClick : (e) ->
+    e.preventDefault()
+    @getFlux().actions.article.editArticle @props.article._id
+
+  handleUpdateClick : (e) ->
+    e.preventDefault()
+    text = React.findDOMNode(@refs.editingText).value.trim()
+    title = React.findDOMNode(@refs.editingTitle).value.trim()
+    article =
+      _id       : @props.article._id
+      title     : title
+      author    : @props.article.author
+      text      : text
+      createdAt : @props.article.createdAt
+      updatedAt : new Date()
+    @getFlux().actions.article.updateArticle @props.article._id, article
+
+  changeTitle : (e) ->
+    @getFlux().actions.article.changeTitle @props.article._id, e.target.value
+
+  changeText : (e) ->
+    @getFlux().actions.article.changeText @props.article._id, e.target.value
 
   render : ->
     rawMarkup = marked(@props.children.toString(), {sanitize: true})
     avatarUrl = "http://gadgtwit.appspot.com/twicon/#{@props.article.author}/mini"
     # FIXME : fix animation
     isDeleted = if @props.article.isDeleted then "deleted" else ""
+    isEditing = if @props.article.isEditing then "editing" else ""
     isHidden  = unless @props.article._id? and @props.article.author is @props.username then "hidden" else ""
     # FIXME : fix animation
     <div className="article #{isDeleted}">
@@ -30,6 +53,12 @@ Article = React.createClass
       <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
       <div className="article-footer">
         <a href="#" className="button-delete #{isHidden}" onClick={@handleDeleteClick}>Delete</a>
+        <a href="#" className="button-edit #{isHidden}" onClick={@handleEditClick}>Edit</a>
+      </div>
+      <div className="editor #{isEditing}">
+        <input className="title-edit" ref="editingTitle" value=@props.article.editingTitle onChange={@changeTitle} />
+        <textarea className="text-edit" ref="editingText" value=@props.article.editingText onChange={@changeText} />
+        <a href="#" className="button-update" onClick={@handleUpdateClick}>Update</a>
       </div>
     </div>
 
@@ -94,8 +123,7 @@ Blog = React.createClass
         <img src="image/logo.png" className="logo" />
         <SideMenu
           profile = {@state.profileStore.profile},
-          isFetching = {@state.profileStore.isFetching}
-         />
+          isFetching = {@state.profileStore.isFetching} />
       </div>
       <div id="content">
         <div className="commentBox">
