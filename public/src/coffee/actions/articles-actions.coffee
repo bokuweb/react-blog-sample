@@ -1,16 +1,22 @@
 constants = require '../constants/constants'
+Q         = require 'q'
 
-module.exports = 
+_fetch = ->
+  d = Q.defer()
+  $.ajax
+    url: "/api/v1/read"
+    dataType: 'json'
+    cache: false
+    success: (articles) => d.resolve articles
+    error : (xhr, status, err) => d.reject err
+  d.promise
+
+module.exports =
   fetchArticles : ->
-    $.ajax
-      url: "/api/v1/read"
-      dataType: 'json'
-      cache: false
-      success: (articles) =>
-        console.dir articles
+    _fetch()
+      .then (articles) =>
         @dispatch constants.FETCH_ARTICLES, {articles : articles}
-      error : (xhr, status, err) =>
-        console.error "/api/v1/read", status, err.toString()
+      .fail (err) => console.error "/api/v1/read", status, err.toString()
 
   saveArticle : (article) ->
     $.ajax
@@ -20,6 +26,8 @@ module.exports =
       data: article
       success: (article) =>
         @dispatch constants.POST_ARTICLE, {article : article}
+        _fetch().then (articles) =>
+          @dispatch constants.FETCH_ARTICLES, {articles : articles}
       error : (xhr, status, err) ->
         console.error "/api/v1/save", status, err.toString()
 
@@ -35,4 +43,4 @@ module.exports =
           @dispatch constants.DELETE_ARTICLE, {id : id}
       error : (xhr, status, err) ->
         console.error "/api/v1/save", status, err.toString()
-        
+

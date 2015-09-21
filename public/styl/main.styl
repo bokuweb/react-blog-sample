@@ -16,7 +16,7 @@ html, a
 
 h1
   color #39AEC6
-  
+
 #container
   height 100%
   display -ms-flexbox
@@ -54,6 +54,13 @@ h1
 .article
   line-height 28px
   margin 80px 0 0 0
+  vendor('transition', all 0.8s ease)
+  vendor('transform', scale(1,1))
+
+.deleted
+  opacity 0
+  vendor('transition', all 0.8s ease)
+  vendor('transform', scale(0,0))
 
 @media screen and (min-width 769px)
   #content

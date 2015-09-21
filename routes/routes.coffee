@@ -1,7 +1,7 @@
-express        = require 'express'
-mongoose       = require 'mongoose'
-config         = require 'config'
-DBManager      = require '../model/dbManager'
+express   = require 'express'
+mongoose  = require 'mongoose'
+config    = require 'config'
+DBManager = require '../model/dbManager'
 
 router   = express.Router()
 
@@ -17,7 +17,7 @@ process.on 'SIGINT', ->
     process.exit 0
 
 articleDB = new DBManager 'blog',
-  #id          : Number
+  id          : Number
   title       : String
   text        : String
   author      : String

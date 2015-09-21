@@ -11,14 +11,20 @@ Article = React.createClass
 
   render : ->
     rawMarkup = marked(@props.children.toString(), {sanitize: true})
-    avatarUrl = "http://gadgtwit.appspot.com/twicon/#{@props.author}/mini"
-    <div className="article">
+    avatarUrl = "http://gadgtwit.appspot.com/twicon/#{@props.article.author}/mini"
+    # FIXME : fix animation
+    isDeleted = if @props.article.isDeleted then "deleted" else ""
+    # FIXME : fix animation
+    <div className="article #{isDeleted}">
       <h1 className="title">
-        {@props.title}
+        {@props.article.title}
       </h1>
       <div className="post-infomation">
-        <span className="author-name"><img src={avatarUrl} className="author-avatar-mini"/>{@props.author}</span>
-        <span className="created-at">created at {@props.createdAt}</span>
+        <span className="author-name">
+          <img src={avatarUrl} className="author-avatar-mini"/>
+          {@props.article.author}
+        </span>
+        <span className="created-at">created at {@props.article.createdAt}</span>
       </div>
       <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
       <div className="article-footer">
@@ -30,11 +36,8 @@ ArticleList = React.createClass
   render : ->
     if @props.articles.length >0
       articleNodes = @props.articles.map (article) ->
-        <Article author={article.author}
-                 id={article._id}
-                 key={article._id}
-                 title={article.title}
-                 createdAt={article.createdAt}>
+        <Article article={article}
+                 id={article._id} >
           {article.text}
         </Article>
 

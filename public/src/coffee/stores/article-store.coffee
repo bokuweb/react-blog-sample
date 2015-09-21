@@ -18,9 +18,11 @@ ArticlesStore = Fluxxor.createStore
     @emit "change"
 
   onDeleteArticles : (payload) ->
-    return if payload.id?
-    for article in @articles when article.id is payload.id
-      article.isDeleted = true
+    return unless payload.id?
+    for article, i in @articles when article._id is payload.id
+      @articles.splice i , 1
+      #article.isDeleted = true
+      break
     @emit "change"
 
   getArticles : ->

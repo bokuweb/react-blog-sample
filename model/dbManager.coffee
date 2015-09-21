@@ -16,11 +16,12 @@ class DBManager
   save : (doc) ->
     d = Q.defer()
     model = new @_Model doc
-    model.save (err) ->
+    model.save (err, res) ->
       if err
         console.log error
         d.reject()
-      else d.resolve()
+      else
+        d.resolve()
     d.promise
 
   read : (params = {}) ->
