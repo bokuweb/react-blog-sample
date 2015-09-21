@@ -7,13 +7,14 @@ Article = React.createClass
   handleDeleteClick : (e) ->
     e.preventDefault()
     console.log "click"
-    @getFlux().actions.article.deleteArticle @props.id
+    @getFlux().actions.article.deleteArticle @props.article._id
 
   render : ->
     rawMarkup = marked(@props.children.toString(), {sanitize: true})
     avatarUrl = "http://gadgtwit.appspot.com/twicon/#{@props.article.author}/mini"
     # FIXME : fix animation
     isDeleted = if @props.article.isDeleted then "deleted" else ""
+    isHidden  = unless @props.article._id? and @props.article.author is @props.username then "hidden" else ""
     # FIXME : fix animation
     <div className="article #{isDeleted}">
       <h1 className="title">
@@ -28,16 +29,17 @@ Article = React.createClass
       </div>
       <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
       <div className="article-footer">
-        <a href="#" onClick={@handleDeleteClick}>Delete</a>
+        <a href="#" className="button-delete #{isHidden}" onClick={@handleDeleteClick}>Delete</a>
       </div>
     </div>
 
 ArticleList = React.createClass
   render : ->
     if @props.articles.length >0
-      articleNodes = @props.articles.map (article) ->
-        <Article article={article}
-                 id={article._id} >
+      articleNodes = @props.articles.map (article) =>
+        <Article article={article},
+                 key={article._id},
+                 username={@props.username} >
           {article.text}
         </Article>
 
@@ -99,7 +101,8 @@ Blog = React.createClass
         <div className="commentBox">
           <BlogForm author={@state.profileStore.profile.username}/>
           <div id="articles">
-            <ArticleList articles={@state.articleStore.articles} />
+            <ArticleList articles={@state.articleStore.articles},
+                         username={@state.profileStore.profile.username} />
           </div>
         </div>
       </div>
