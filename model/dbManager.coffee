@@ -16,11 +16,12 @@ class DBManager
   save : (doc) ->
     d = Q.defer()
     model = new @_Model doc
-    model.save (err) ->
+    model.save (err, res) ->
       if err
         console.log error
         d.reject()
-      else d.resolve()
+      else
+        d.resolve()
     d.promise
 
   read : (params = {}) ->
@@ -35,6 +36,13 @@ class DBManager
       .sort sort
       .skip skip
       .exec (err, docs) -> d.resolve docs
+    d.promise
+
+  findOneById : (id) ->
+    d = Q.defer()
+    @_Model.findById id, (err, doc) ->
+      if err then d.reject err
+      else d.resolve doc
     d.promise
 
   getItems : (params) ->
@@ -86,8 +94,9 @@ class DBManager
     d.promise
 
   delete : (id) ->
+    console.log "delete"
     d = Q.defer()
-    @_Model.remove {__id: id}, (err) ->
+    @_Model.remove {_id: id}, (err) ->
       if err then d.reject err
       else d.resolve()
     d.promise

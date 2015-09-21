@@ -4,7 +4,7 @@ ArticlesStore  = require './stores/article-store'
 ProfileStore   = require './stores/profile-store'
 articleActions = require './actions/articles-actions'
 profileActions = require './actions/profile-actions'
-CommentBox     = require './components/main-components'
+Blog           = require './components/main-components'
 
 stores =
   ArticlesStore : new ArticlesStore()
@@ -17,6 +17,6 @@ actions =
 flux = new Fluxxor.Flux stores, actions
 
 React.render(
-  <CommentBox flux = {flux} />,
+  <Blog flux = {flux} />,
   document.body
 )

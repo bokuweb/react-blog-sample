@@ -8,8 +8,6 @@ module.exports =
       dataType: 'json'
       cache: false
       success: (profile) =>
-        console.log "profile"
-        console.dir profile
         @dispatch constants.FETCH_END_PROFILE, {profile : profile}
       error : (xhr, status, err) =>
         console.error "/api/v1/profile", status, err.toString()

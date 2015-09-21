@@ -3,28 +3,43 @@ FluxMixin       = Fluxxor.FluxMixin React
 StoreWatchMixin = Fluxxor.StoreWatchMixin
 
 Article = React.createClass
+  mixins : [FluxMixin]
+  handleDeleteClick : (e) ->
+    e.preventDefault()
+    console.log "click"
+    @getFlux().actions.article.deleteArticle @props.article._id
+
   render : ->
     rawMarkup = marked(@props.children.toString(), {sanitize: true})
-    avatarUrl = "http://gadgtwit.appspot.com/twicon/#{@props.author}/mini"
-    <div className="article">
+    avatarUrl = "http://gadgtwit.appspot.com/twicon/#{@props.article.author}/mini"
+    # FIXME : fix animation
+    isDeleted = if @props.article.isDeleted then "deleted" else ""
+    isHidden  = unless @props.article._id? and @props.article.author is @props.username then "hidden" else ""
+    # FIXME : fix animation
+    <div className="article #{isDeleted}">
       <h1 className="title">
-        {@props.title}
+        {@props.article.title}
       </h1>
       <div className="post-infomation">
-        <span className="author-name"><img src={avatarUrl} className="author-avatar-mini"/>{@props.author}</span>
-        <span className="created-at">created at {@props.createdAt}</span>
+        <span className="author-name">
+          <img src={avatarUrl} className="author-avatar-mini"/>
+          {@props.article.author}
+        </span>
+        <span className="created-at">created at {@props.article.createdAt}</span>
       </div>
       <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+      <div className="article-footer">
+        <a href="#" className="button-delete #{isHidden}" onClick={@handleDeleteClick}>Delete</a>
+      </div>
     </div>
 
 ArticleList = React.createClass
   render : ->
     if @props.articles.length >0
-      articleNodes = @props.articles.map (article) ->
-        <Article author={article.author}
-                 key={article._id}
-                 title={article.title}
-                 createdAt={article.createdAt}>
+      articleNodes = @props.articles.map (article) =>
+        <Article article={article},
+                 key={article._id},
+                 username={@props.username} >
           {article.text}
         </Article>
 
@@ -58,7 +73,7 @@ BlogForm = React.createClass
       <input type="submit" value="Post" />
     </form>
 
-CommentBox = React.createClass
+Blog = React.createClass
   mixins : [
     FluxMixin
     StoreWatchMixin "ArticlesStore", "ProfileStore"
@@ -86,7 +101,8 @@ CommentBox = React.createClass
         <div className="commentBox">
           <BlogForm author={@state.profileStore.profile.username}/>
           <div id="articles">
-            <ArticleList articles={@state.articleStore.articles} />
+            <ArticleList articles={@state.articleStore.articles},
+                         username={@state.profileStore.profile.username} />
           </div>
         </div>
       </div>
@@ -128,4 +144,4 @@ SideMenu = React.createClass
           username = {@props.profile.username}
         />
 
-module.exports = CommentBox
+module.exports = Blog
