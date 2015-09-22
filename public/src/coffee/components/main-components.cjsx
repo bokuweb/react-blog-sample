@@ -1,5 +1,6 @@
 Fluxxor         = require 'fluxxor'
 PostInformation = require './post-information'
+EditButton      = require './edit-button'
 
 FluxMixin       = Fluxxor.FluxMixin React
 StoreWatchMixin = Fluxxor.StoreWatchMixin
@@ -9,10 +10,6 @@ Article = React.createClass
   handleDeleteClick : (e) ->
     e.preventDefault()
     @getFlux().actions.article.deleteArticle @props.article._id
-
-  handleEditClick : (e) ->
-    e.preventDefault()
-    @getFlux().actions.article.editArticle @props.article._id
 
   handleUpdateClick : (e) ->
     e.preventDefault()
@@ -48,7 +45,7 @@ Article = React.createClass
       <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
       <div className="article-footer #{isHidden}">
         <a href="#" className="button-delete" onClick={@handleDeleteClick}>Delete</a>
-        <a href="#" className="button-edit" onClick={@handleEditClick}>Edit</a>
+        <EditButton article={@props.article} />
       </div>
       <div className="editor #{isEditing}">
         <input className="title-edit" ref="editingTitle" value=@props.article.editingTitle onChange={@editTitle} />

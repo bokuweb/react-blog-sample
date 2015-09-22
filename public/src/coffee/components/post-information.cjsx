@@ -1,6 +1,6 @@
 moment = require "moment"
 
-class PostInformation extends React.Component
+PostInformation = React.createClass
   render : ->
     avatarUrl = "http://gadgtwit.appspot.com/twicon/#{@props.article.author}/mini"
     hiddenUnlessUpdated = if @props.article.createdAt is @props.article.updatedAt then "hidden" else ""
