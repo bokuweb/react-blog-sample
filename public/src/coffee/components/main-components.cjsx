@@ -25,11 +25,11 @@ Article = React.createClass
       updatedAt : new Date()
     @getFlux().actions.article.updateArticle @props.article._id, article
 
-  changeTitle : (e) ->
-    @getFlux().actions.article.changeTitle @props.article._id, e.target.value
+  editTitle : (e) ->
+    @getFlux().actions.article.editTitle @props.article._id, e.target.value
 
-  changeText : (e) ->
-    @getFlux().actions.article.changeText @props.article._id, e.target.value
+  editText : (e) ->
+    @getFlux().actions.article.editText @props.article._id, e.target.value
 
   render : ->
     rawMarkup = marked(@props.children.toString(), {sanitize: true})
@@ -37,7 +37,7 @@ Article = React.createClass
     # FIXME : fix animation
     isDeleted = if @props.article.isDeleted then "deleted" else ""
     isEditing = if @props.article.isEditing then "editing" else ""
-    isHidden  = unless @props.article._id? and @props.article.author is @props.username then "hidden" else ""
+    isHidden  = if @props.article._id? and @props.article.author is @props.username then "" else "hidden"
     # FIXME : fix animation
     <div className="article #{isDeleted}">
       <h1 className="title">
@@ -51,13 +51,13 @@ Article = React.createClass
         <span className="created-at">created at {@props.article.createdAt}</span>
       </div>
       <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
-      <div className="article-footer">
-        <a href="#" className="button-delete #{isHidden}" onClick={@handleDeleteClick}>Delete</a>
-        <a href="#" className="button-edit #{isHidden}" onClick={@handleEditClick}>Edit</a>
+      <div className="article-footer #{isHidden}">
+        <a href="#" className="button-delete" onClick={@handleDeleteClick}>Delete</a>
+        <a href="#" className="button-edit" onClick={@handleEditClick}>Edit</a>
       </div>
       <div className="editor #{isEditing}">
-        <input className="title-edit" ref="editingTitle" value=@props.article.editingTitle onChange={@changeTitle} />
-        <textarea className="text-edit" ref="editingText" value=@props.article.editingText onChange={@changeText} />
+        <input className="title-edit" ref="editingTitle" value=@props.article.editingTitle onChange={@editTitle} />
+        <textarea className="text-edit" ref="editingText" value=@props.article.editingText onChange={@editText} />
         <a href="#" className="button-update" onClick={@handleUpdateClick}>Update</a>
       </div>
     </div>
@@ -78,7 +78,7 @@ ArticleList = React.createClass
     else
       <h1>There are yet no article...</h1>
 
-BlogForm = React.createClass
+PostForm = React.createClass
   mixins : [FluxMixin]
   handleSubmit : (e) ->
     e.preventDefault()
@@ -96,11 +96,13 @@ BlogForm = React.createClass
     @getFlux().actions.article.saveArticle article
 
   render : ->
-    <form className="commentForm" onSubmit={@handleSubmit}>
-      <input type="text" placeholder="title..." ref="title" />
-      <input type="text" placeholder="Say something..." ref="text" />
-      <input type="submit" value="Post" />
-    </form>
+    isHidden  = if @props.author then "" else "hidden"
+    <div className="postForm #{isHidden}">
+      <h1>Add New Post</h1>
+      <input className="title-edit" placeholder="title" ref="title" />
+      <textarea className="text-edit" ref="text" />
+      <a href="#" className="button-post" onClick={@handleSubmit}>Post</a>
+    </div>
 
 Blog = React.createClass
   mixins : [
@@ -126,12 +128,10 @@ Blog = React.createClass
           isFetching = {@state.profileStore.isFetching} />
       </div>
       <div id="content">
-        <div className="commentBox">
-          <BlogForm author={@state.profileStore.profile.username}/>
-          <div id="articles">
-            <ArticleList articles={@state.articleStore.articles},
-                         username={@state.profileStore.profile.username} />
-          </div>
+        <PostForm author={@state.profileStore.profile.username}/>
+        <div id="articles">
+          <ArticleList articles={@state.articleStore.articles},
+                       username={@state.profileStore.profile.username} />
         </div>
       </div>
     </div>

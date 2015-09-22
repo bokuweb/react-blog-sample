@@ -16,8 +16,6 @@ textarea,
 select
   outline none
 
-
-
 html, a
   -webkit-font-smoothing  antialiased text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
 
@@ -70,9 +68,8 @@ h1
   vendor('transition', all 0.8s ease)
   vendor('transform', scale(0,0))
 
-.hidden
-  display none
-  
+
+
 @media screen and (min-width 769px)
   #content
     overflow-y auto
@@ -128,7 +125,7 @@ a.button-delete:hover, a.button-edit:hover
 
   input.title-edit
     -webkit-font-smoothing  antialiased text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
-    width calc(100% - 20px)
+    width calc(100% - 30px)
     padding 10px
     font-size 90%
     border-radius 5px
@@ -136,14 +133,13 @@ a.button-delete:hover, a.button-edit:hover
     background #EAE5DE
     color #45828E
 
-    :focus
-      border none
-      background #EAE5DE
+  input:focus
+    border solid 2px #39AEC6
 
   textarea.text-edit
     -webkit-font-smoothing  antialiased text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
     margin 30px 0 0 0
-    width calc(100% - 20px)
+    width calc(100% - 30px)
     padding 10px
     font-size 90%
     border-radius 5px
@@ -152,6 +148,9 @@ a.button-delete:hover, a.button-edit:hover
     height 260px
     resize none
     color #45828E
+
+  textarea.text-edit:focus
+    border solid 2px #39AEC6
 
 .editing
   height 400px
@@ -173,3 +172,62 @@ a.button-update
 
 a.button-update:hover
   opacity 0.8
+
+
+
+
+.postForm
+  max-width 800px
+  word-break break-all
+  padding 20px 30px 10px 30px
+
+  input
+    -webkit-font-smoothing  antialiased text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
+    width calc(100% - 20px)
+    padding 10px
+    font-size 90%
+    border-radius 5px
+    border none
+    background #EAE5DE
+    color #45828E
+
+  input:focus
+    border solid 2px #39AEC6
+
+  textarea.text-edit
+    -webkit-font-smoothing  antialiased text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
+    margin 30px 0 0 0
+    width calc(100% - 20px)
+    padding 10px
+    font-size 90%
+    border-radius 5px
+    border none
+    background #EAE5DE
+    height 260px
+    resize none
+    color #45828E
+
+  textarea.text-edit:focus
+    border solid 2px #39AEC6
+
+a.button-post
+  display inline-block
+  width 60px
+  border-radius 3px
+  padding 0px 6px
+  text-decoration none
+  color #FFF
+  text-align center
+  vendor('transition', all 0.5s ease)
+  background #1ABC9C
+  text-shadow none
+  font-size 12px
+  margin 0 10px 0 0
+  line-height 32px
+
+a.button-post:hover
+  opacity 0.8
+
+
+.hidden
+  display none
