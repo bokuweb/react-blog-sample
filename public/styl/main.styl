@@ -11,11 +11,19 @@ html, body
   -ms-text-size-adjust 100%
   background #FAF7F3
 
+input,
+textarea,
+select
+  outline none
+
+
+
 html, a
   -webkit-font-smoothing  antialiased text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
 
 h1
   color #39AEC6
+  line-height 36px
 
 #container
   height 100%
@@ -84,14 +92,13 @@ h1
     width 20px
     height 20px
     border-radius 50%
-    margin 0 10px 0 0
+    margin 0px 10px -8px 0
     border solid 3px #FFF
 
   span.author-name, span.created-at
     font-size 80%
     color #95A5A6
     margin-right 20px
-
 
 
 a.button-delete, a.button-edit
@@ -114,14 +121,55 @@ a.button-delete:hover, a.button-edit:hover
 
 
 .editor
-  background #ccc
   height 0px
   vendor('transition', all 0.5s ease)
   overflow hidden
+  margin 30px 0 0 0
+
+  input.title-edit
+    -webkit-font-smoothing  antialiased text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
+    width calc(100% - 20px)
+    padding 10px
+    font-size 90%
+    border-radius 5px
+    border none
+    background #EAE5DE
+    color #45828E
+
+    :focus
+      border none
+      background #EAE5DE
+
+  textarea.text-edit
+    -webkit-font-smoothing  antialiased text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
+    margin 30px 0 0 0
+    width calc(100% - 20px)
+    padding 10px
+    font-size 90%
+    border-radius 5px
+    border none
+    background #EAE5DE
+    height 260px
+    resize none
+    color #45828E
 
 .editing
-  height 300px
+  height 400px
 
-.text-edit
-  width 98%
-  height 200px
+
+a.button-update
+  display inline-block
+  width 60px
+  border-radius 3px
+  padding 0px 6px
+  text-decoration none
+  color #FFF
+  text-align center
+  vendor('transition', all 0.5s ease)
+  background #1ABC9C
+  text-shadow none
+  font-size 12px
+  margin 0 10px 0 0
+
+a.button-update:hover
+  opacity 0.8
