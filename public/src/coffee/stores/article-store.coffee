@@ -8,8 +8,8 @@ ArticlesStore = Fluxxor.createStore
     @bindActions constants.POST_ARTICLE, @onPostArticle
     @bindActions constants.DELETE_ARTICLE, @onDeleteArticle
     @bindActions constants.EDIT_ARTICLE, @onEditArticle
-    @bindActions constants.CHANGE_TITLE, @onChangeTitle
-    @bindActions constants.CHANGE_TEXT, @onChangeText
+    @bindActions constants.EDIT_TITLE, @onEditTitle
+    @bindActions constants.EDIT_TEXT, @onEditText
     @bindActions constants.UPDATE_ARTICLE, @onUpdateArticle
     
   onFetchArticles : (payload) ->
@@ -41,14 +41,14 @@ ArticlesStore = Fluxxor.createStore
       break
     @emit "change"
 
-  onChangeTitle : (payload) ->
+  onEditTitle : (payload) ->
     return unless payload.id?
     for article, i in @articles when article._id is payload.id
       article.editingTitle = payload.title
       break
     @emit "change"
 
-  onChangeText : (payload) ->
+  onEditText : (payload) ->
     return unless payload.id?
     for article, i in @articles when article._id is payload.id
       article.editingText = payload.text

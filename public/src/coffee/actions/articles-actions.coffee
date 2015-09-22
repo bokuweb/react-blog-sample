@@ -47,11 +47,11 @@ module.exports =
   editArticle : (id) ->
     @dispatch constants.EDIT_ARTICLE, {id : id}
 
-  changeTitle : (id, title) ->
-    @dispatch constants.CHANGE_TITLE, {id : id, title : title}
+  editTitle : (id, title) ->
+    @dispatch constants.EDIT_TITLE, {id : id, title : title}
 
-  changeText : (id, text) ->
-    @dispatch constants.CHANGE_TEXT, {id : id, text : text}
+  editText : (id, text) ->
+    @dispatch constants.EDIT_TEXT, {id : id, text : text}
 
   updateArticle : (id, article) ->
     $.ajax
