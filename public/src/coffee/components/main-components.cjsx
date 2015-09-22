@@ -1,4 +1,6 @@
 Fluxxor         = require 'fluxxor'
+PostInformation = require './post-information'
+
 FluxMixin       = Fluxxor.FluxMixin React
 StoreWatchMixin = Fluxxor.StoreWatchMixin
 
@@ -33,7 +35,6 @@ Article = React.createClass
 
   render : ->
     rawMarkup = marked(@props.children.toString(), {sanitize: true})
-    avatarUrl = "http://gadgtwit.appspot.com/twicon/#{@props.article.author}/mini"
     # FIXME : fix animation
     isDeleted = if @props.article.isDeleted then "deleted" else ""
     isEditing = if @props.article.isEditing then "editing" else ""
@@ -43,13 +44,7 @@ Article = React.createClass
       <h1 className="title">
         {@props.article.title}
       </h1>
-      <div className="post-infomation">
-        <span className="author-name">
-          <img src={avatarUrl} className="author-avatar-mini"/>
-          {@props.article.author}
-        </span>
-        <span className="created-at">created at {@props.article.createdAt}</span>
-      </div>
+      <PostInformation article={@props.article} />
       <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
       <div className="article-footer #{isHidden}">
         <a href="#" className="button-delete" onClick={@handleDeleteClick}>Delete</a>
