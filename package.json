@@ -6,11 +6,11 @@
     "start": "node ./bin/www"
   },
   "main": "./bin/www",
-  "browserify" : {
-      "transform" : [
-          "coffee-reactify",
-          "react-jade"
-      ]
+  "browserify": {
+    "transform": [
+      "coffee-reactify",
+      "react-jade"
+    ]
   },
   "dependencies": {
     "body-parser": "^1.4.3",
@@ -31,6 +31,7 @@
     "passport": "^0.3.0",
     "passport-twitter": "^1.0.3",
     "q": "^1.4.1",
+    "radium": "^0.14.1",
     "react": "~0.13.3",
     "react-jade": "^2.4.0",
     "serve-favicon": "^2.3.0"
