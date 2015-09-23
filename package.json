@@ -16,6 +16,7 @@
     "express": "^4.13.3",
     "express-session": "~1.11.3",
     "fluxxor": "~1.7.3",
+    "marked": "^0.3.5",
     "moment": "^2.10.6",
     "mongoose": "^4.1.7",
     "mongoose-cachebox": "^1.2.0",

@@ -4,7 +4,7 @@ ArticlesStore  = require './stores/article-store'
 ProfileStore   = require './stores/profile-store'
 articleActions = require './actions/articles-actions'
 profileActions = require './actions/profile-actions'
-Blog           = require './components/main-components'
+Blog           = require './components/blog'
 
 stores =
   ArticlesStore : new ArticlesStore()
