@@ -1,6 +1,7 @@
 Fluxxor   = require 'fluxxor'
 jade      = require 'react-jade'
 _         = require 'lodash'
+
 FluxMixin = Fluxxor.FluxMixin React
 
 PostForm = React.createClass

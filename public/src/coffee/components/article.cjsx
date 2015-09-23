@@ -4,6 +4,9 @@ PostInformation = require './post-information'
 EditButton      = require './edit-button'
 DeleteButton    = require './delete-button'
 EditBox         = require './edit-box'
+jade            = require 'react-jade'
+_               = require 'lodash'
+
 FluxMixin       = Fluxxor.FluxMixin React
 
 Article = React.createClass
@@ -20,15 +23,15 @@ Article = React.createClass
       smartLists : true
 
     hiddenUnlessAuthor = if @props.article._id? and @props.article.author is @props.username then "" else "hidden"
-    <div className = "article">
-      <h1 className = "title">{@props.article.title}</h1>
-      <PostInformation article = {@props.article} />
-      <span dangerouslySetInnerHTML = {{__html: rawMarkup}} />
-      <div className = "article-footer #{hiddenUnlessAuthor}">
-        <DeleteButton article = {@props.article} />
-        <EditButton article = {@props.article} />
-      </div>
-      <EditBox article = {@props.article} />
-    </div>
+    jade.compile("""
+      .article
+        h1.title= article.title
+        PostInformation(article=article)
+        span(dangerouslySetInnerHTML={__html: rawMarkup})
+        div.article-footer(class=hiddenUnlessAuthor)
+          DeleteButton(article=article)
+          EditButton(article=article)
+        EditBox(article=article)
+    """)(_.assign {}, @, @props)
 
 module.exports = Article
