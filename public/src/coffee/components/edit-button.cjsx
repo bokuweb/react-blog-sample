@@ -1,4 +1,6 @@
 Fluxxor   = require 'fluxxor'
+jade      = require 'react-jade'
+_         = require 'lodash'
 FluxMixin = Fluxxor.FluxMixin React
 
 EditButton = React.createClass
@@ -9,8 +11,8 @@ EditButton = React.createClass
 
   render : ->
     if @props.article.isEditing
-      <a href="#" className="button-editing" onClick={@handleEditClick}>cancel</a>
+      jade.compile("a.button-editing(onClick=handleEditClick) cancel")(_.assign {}, @, @props)
     else
-      <a href="#" className="button-edit" onClick={@handleEditClick}>Edit</a>
+      jade.compile("a.button-edit(onClick=handleEditClick) Edit")(_.assign {}, @, @props)
 
 module.exports = EditButton
