@@ -25,15 +25,24 @@ SideMenu = React.createClass
     @getFlux().actions.profile.fetchProfile()
 
   render : ->
-    if @props.isFetching
-      <i className="fa fa-spinner fa-spin loading"></i>
+    if @props.isProfileFetching
+      <div id="side-menu">
+        <img src="image/logo.png" className="logo" />
+        <i className="fa fa-spinner fa-spin loading"></i>
+      </div>
     else
       if @props.profile.error?
-        <GuestProfile avatarImage = {"image/guest.png"} />
+        <div id="side-menu">
+          <img src="image/logo.png" className="logo" />
+          <GuestProfile avatarImage = {"image/guest.png"} />
+        </div>
       else
         avatarUrl = "http://gadgtwit.appspot.com/twicon/#{@props.profile.username}/bigger"
-        <UserProfile
-          avatarImage = {avatarUrl}
-          username = {@props.profile.username} />
+        <div id="side-menu">
+          <img src="image/logo.png" className="logo" />
+          <UserProfile
+            avatarImage = {avatarUrl}
+            username = {@props.profile.username} />
+        </div>
 
 module.exports = SideMenu

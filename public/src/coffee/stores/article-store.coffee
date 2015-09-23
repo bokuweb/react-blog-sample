@@ -11,21 +11,23 @@ ArticlesStore = Fluxxor.createStore
     @bindActions constants.EDIT_TITLE, @onEditTitle
     @bindActions constants.EDIT_TEXT, @onEditText
     @bindActions constants.UPDATE_ARTICLE, @onUpdateArticle
-    
+
   onFetchArticles : (payload) ->
     @articles = payload.articles
     @emit "change"
 
   onPostArticle : (payload) ->
     return if payload.article.error?
+    # temporarily set _id for react key.
+    payload.article._id = @articles.length
     @articles = [payload.article].concat @articles
     @emit "change"
 
   onDeleteArticle : (payload) ->
     return unless payload.id?
     for article, i in @articles when article._id is payload.id
+      # delete article
       @articles.splice i , 1
-      #article.isDeleted = true
       break
     @emit "change"
 
