@@ -10,7 +10,7 @@ Article = React.createClass
   mixins : [FluxMixin]
 
   render : ->
-    rawMarkup = marked(@props.children.toString(), {
+    rawMarkup = marked @props.children.toString(),
       renderer : new marked.Renderer()
       gfm : true
       tables : true
@@ -18,8 +18,7 @@ Article = React.createClass
       pedantic : false
       sanitize : true
       smartLists : true
-    })
-    
+
     hiddenUnlessAuthor = if @props.article._id? and @props.article.author is @props.username then "" else "hidden"
     <div className = "article">
       <h1 className = "title">{@props.article.title}</h1>
