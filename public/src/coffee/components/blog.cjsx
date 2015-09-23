@@ -1,8 +1,10 @@
-Fluxxor         = require 'fluxxor'
-PostForm        = require './post-form'
-SideMenu        = require './side-menu'
-Article         = require './article'
-ArticleList     = require './article-list'
+Fluxxor     = require 'fluxxor'
+jade        = require 'react-jade'
+_           = require 'lodash'
+PostForm    = require './post-form'
+SideMenu    = require './side-menu'
+Article     = require './article'
+ArticleList = require './article-list'
 
 FluxMixin       = Fluxxor.FluxMixin React
 StoreWatchMixin = Fluxxor.StoreWatchMixin
@@ -24,18 +26,15 @@ Blog = React.createClass
     @getFlux().actions.article.fetchArticles()
 
   render : ->
-    <div id="container">
-      <SideMenu
-        profile = {@state.profileStore.profile},
-        isProfileFetching = {@state.profileStore.isProfileFetching} />
-      <div id = "content">
-        <PostForm author = {@state.profileStore.profile.username}/>
-        <div id = "articles">
-          <ArticleList articles = {@state.articleStore.articles},
-                       username = {@state.profileStore.profile.username} />
-        </div>
-      </div>
-    </div>
-
+    jade.compile("""
+      #container
+        SideMenu(profile=profileStore.profile
+                 isProfileFetching=profileStore.isProfileFetching)
+        #content
+          PostForm(author=profileStore.profile.username)
+          #articles
+            ArticleList(articles=articleStore.articles
+                        username=profileStore.profile.username)
+    """)(_.assign {}, @, @state)
 
 module.exports = Blog
