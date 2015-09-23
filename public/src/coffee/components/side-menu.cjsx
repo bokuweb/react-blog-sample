@@ -1,22 +1,9 @@
-Fluxxor         = require 'fluxxor'
-FluxMixin       = Fluxxor.FluxMixin React
-
-GuestProfile = React.createClass
-  render : ->
-    <div id="profile">
-      <img src={@props.avatarImage} className="avatar" />
-      <h2 className="greeting">Hello!!</h2>
-      <p className="please-login">Plaese login to edit this blog</p>
-      <a href="./login" className="button-login">Login</a>
-    </div>
-
-UserProfile = React.createClass
-  render : ->
-    <div id="profile">
-      <img src={@props.avatarImage} className="avatar" />
-      <p className="please-login">Hello!! {@props.username}</p>
-      <a href="./logout" className="button-login">Logout</a>
-    </div>
+Fluxxor      = require 'fluxxor'
+jade         = require 'react-jade'
+_            = require 'lodash'
+UserProfile  = require './user-profile'
+GuestProfile = require './guest-profile'
+FluxMixin    = Fluxxor.FluxMixin React
 
 SideMenu = React.createClass
   mixins : [FluxMixin]
@@ -26,23 +13,24 @@ SideMenu = React.createClass
 
   render : ->
     if @props.isProfileFetching
-      <div id="side-menu">
-        <img src="image/logo.png" className="logo" />
-        <i className="fa fa-spinner fa-spin loading"></i>
-      </div>
+      jade.compile("""
+        #side-menu
+          img.logo(src="image/logo.png")
+          i.fa.fa-spinner.fa-spin.loading
+      """)(_.assign {}, @, @props)
     else
       if @props.profile.error?
-        <div id="side-menu">
-          <img src="image/logo.png" className="logo" />
-          <GuestProfile avatarImage = {"image/guest.png"} />
-        </div>
+        jade.compile("""
+          #side-menu
+            img.logo(src="image/logo.png")
+            GuestProfile(avatarImage="image/guest.png")
+        """)(_.assign {}, @, @props)
       else
         avatarUrl = "http://gadgtwit.appspot.com/twicon/#{@props.profile.username}/bigger"
-        <div id="side-menu">
-          <img src="image/logo.png" className="logo" />
-          <UserProfile
-            avatarImage = {avatarUrl}
-            username = {@props.profile.username} />
-        </div>
+        jade.compile("""
+          #side-menu
+            img.logo(src="image/logo.png")
+            UserProfile(avatarImage=avatarUrl username=profile.username)
+        """)(_.assign {}, @, @props)
 
 module.exports = SideMenu

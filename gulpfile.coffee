@@ -15,7 +15,6 @@ gulp.task 'build:front', watchify (watchify) ->
     .pipe watchify
       watch     : watching
       extensions: ['.coffee', '.js', '.cjsx']
-      transform : ['coffee-reactify']
     .pipe rename
       extname: ".js"
     .pipe gulp.dest 'public/dist'

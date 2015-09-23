@@ -1,5 +1,8 @@
-Fluxxor         = require 'fluxxor'
-FluxMixin       = Fluxxor.FluxMixin React
+Fluxxor   = require 'fluxxor'
+jade      = require 'react-jade'
+_         = require 'lodash'
+
+FluxMixin = Fluxxor.FluxMixin React
 
 PostForm = React.createClass
   mixins : [FluxMixin]
@@ -20,13 +23,14 @@ PostForm = React.createClass
 
   render : ->
     if @props.author
-      <div className="postForm">
-        <h1>Add New Post</h1>
-        <input className="title-edit" placeholder="title" ref="title" />
-        <textarea className="text-edit" ref="text" />
-        <a href="#" className="button-post" onClick={@handleSubmit}>Post</a>
-      </div>
+      jade.compile("""
+        .postForm
+          h1 Add New Post
+          input.title-edit(placeholder="title" ref="title")
+          textarea.text-edit(ref="text")
+          a.button-post(href="#" onClick=handleSubmit) Post
+      """)(_.assign {}, @, @props)
     else
-      <div></div>
+      jade.compile("div")()
 
 module.exports = PostForm

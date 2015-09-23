@@ -6,6 +6,12 @@
     "start": "node ./bin/www"
   },
   "main": "./bin/www",
+  "browserify" : {
+      "transform" : [
+          "coffee-reactify",
+          "react-jade"
+      ]
+  },
   "dependencies": {
     "body-parser": "^1.4.3",
     "config": "^1.16.0",
@@ -16,6 +22,7 @@
     "express": "^4.13.3",
     "express-session": "~1.11.3",
     "fluxxor": "~1.7.3",
+    "lodash": "^3.10.1",
     "marked": "^0.3.5",
     "moment": "^2.10.6",
     "mongoose": "^4.1.7",
@@ -25,6 +32,7 @@
     "passport-twitter": "^1.0.3",
     "q": "^1.4.1",
     "react": "~0.13.3",
+    "react-jade": "^2.4.0",
     "serve-favicon": "^2.3.0"
   },
   "devDependencies": {

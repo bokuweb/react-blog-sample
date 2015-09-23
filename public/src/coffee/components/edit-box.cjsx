@@ -1,5 +1,7 @@
-Fluxxor         = require 'fluxxor'
-FluxMixin       = Fluxxor.FluxMixin React
+Fluxxor   = require 'fluxxor'
+jade      = require 'react-jade'
+_         = require 'lodash'
+FluxMixin = Fluxxor.FluxMixin React
 
 EditBox = React.createClass
   mixins : [FluxMixin]
@@ -25,10 +27,11 @@ EditBox = React.createClass
 
   render : ->
     showIfEditing = if @props.article.isEditing then "editing" else ""
-    <div className="editor #{showIfEditing}">
-      <input className="title-edit" ref="editingTitle" value=@props.article.editingTitle onChange={@editTitle} />
-      <textarea className="text-edit" ref="editingText" value=@props.article.editingText onChange={@editText} />
-      <a href="#" className="button-update" onClick={@handleUpdateClick}>Update</a>
-    </div>
-
+    jade.compile("""
+      div.editor(class=showIfEditing)
+        input.title-edit(ref="editingTitle" value=article.editingTitle onChange=editTitle)
+        textarea.text-edit(ref="editingText" value=article.editingText onChange=editText)
+        a.button-update(onClick=handleUpdateClick) Update
+    """)(_.assign {}, @, @props)
+    
 module.exports = EditBox

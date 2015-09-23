@@ -1,18 +1,20 @@
+jade   = require 'react-jade'
+_      = require 'lodash'
 moment = require "moment"
 
 PostInformation = React.createClass
   render : ->
     avatarUrl = "http://gadgtwit.appspot.com/twicon/#{@props.article.author}/mini"
     hiddenUnlessUpdated = if @props.article.createdAt is @props.article.updatedAt then "hidden" else ""
-    createdAt = moment(new Date(@props.article.createdAt)).format('lll')
-    updatedAt = moment(new Date(@props.article.updatedAt)).format('lll')
-    <div className="post-infomation">
-      <span className="author-name">
-        <img src={avatarUrl} className="author-avatar-mini"/>
-        {@props.article.author}
-      </span>
-      <span className="created-at">created at {createdAt}</span>
-      <span className="updated-at #{hiddenUnlessUpdated}">updated at {updatedAt}</span>
-    </div>
+    createdAt = "created at #{moment(new Date(@props.article.createdAt)).format('lll')}"
+    updatedAt = "updated at #{moment(new Date(@props.article.updatedAt)).format('lll')}"
+    jade.compile("""
+      .post-infomation
+        span.author-name
+          img.author-avatar-mini(src=avatarUrl)
+          span= article.author
+        span.created-at= createdAt
+        span.updated-at(class=hiddenUnlessUpdated)= updatedAt
+    """)(_.assign {}, @, @props)
 
 module.exports = PostInformation
