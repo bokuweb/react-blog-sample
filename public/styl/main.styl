@@ -14,12 +14,14 @@ textarea,
 select
   outline none
 
-html, a
+html,
+a,
+input,
+textarea
   -webkit-font-smoothing  antialiased text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
 
 .hidden
   display none
-
 
 h1
   color #39AEC6
@@ -102,42 +104,6 @@ side-menu-width-pc = 300px
     font-size 80%
     color #95A5A6
     margin-right 20px
-
-.postForm
-  max-width 800px
-  word-break break-all
-  padding 20px 30px 10px 30px
-
-  input
-    -webkit-font-smoothing  antialiased text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
-    width calc(100% - 20px)
-    padding 10px
-    font-size 90%
-    border-radius 5px
-    border none
-    background #EAE5DE
-    color #45828E
-
-  input:focus
-    border solid 2px #39AEC6
-
-  textarea.text-edit
-    -webkit-font-smoothing  antialiased text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
-    margin 30px 0 0 0
-    width calc(100% - 20px)
-    padding 10px
-    font-size 90%
-    border-radius 5px
-    border none
-    background #EAE5DE
-    height 260px
-    resize none
-    color #45828E
-
-  textarea.text-edit:focus
-    border solid 2px #39AEC6
-
-
 
 .loading
   margin 100px auto 0 150px
