@@ -1,8 +1,6 @@
 @import 'vendor'
 @import 'profile'
 
-side-menu-width-pc = 300px
-
 html, body
   height 100%
   padding 0
@@ -19,6 +17,10 @@ select
 html, a
   -webkit-font-smoothing  antialiased text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
 
+.hidden
+  display none
+
+
 h1
   color #39AEC6
   line-height 36px
@@ -32,6 +34,8 @@ h1
   display box
   -ms-flex-direction row
   vendor('box-orient', horizontal)
+
+side-menu-width-pc = 300px
 
 #side-menu
   background #A5ECFA
@@ -99,84 +103,6 @@ h1
     color #95A5A6
     margin-right 20px
 
-
-a.button-delete, a.button-edit
-  display inline-block
-  width 60px
-  border-radius 3px
-  border solid 1px #FAF7F3
-  padding 0px 6px
-  text-decoration none
-  color #FFF
-  text-align center
-  vendor('transition', all 0.5s ease)
-  background #95A5A6
-  text-shadow none
-  font-size 12px
-  margin 0 10px 0 0
-  cursor pointer
-
-a.button-delete:hover
-  background #A5ECFA
-  cursor pointer
-
-.editor
-  height 0px
-  vendor('transition', all 0.5s ease)
-  overflow hidden
-  margin 30px 0 0 0
-
-  input.title-edit
-    -webkit-font-smoothing  antialiased text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
-    width calc(100% - 30px)
-    padding 10px
-    font-size 90%
-    border-radius 5px
-    border none
-    background #EAE5DE
-    color #45828E
-
-  input:focus
-    border solid 2px #39AEC6
-
-  textarea.text-edit
-    -webkit-font-smoothing  antialiased text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
-    margin 30px 0 0 0
-    width calc(100% - 30px)
-    padding 10px
-    font-size 90%
-    border-radius 5px
-    border none
-    background #EAE5DE
-    height 260px
-    resize none
-    color #45828E
-
-  textarea.text-edit:focus
-    border solid 2px #39AEC6
-
-.editing
-  height 400px
-
-
-a.button-update
-  display inline-block
-  width 60px
-  border-radius 3px
-  padding 0px 6px
-  text-decoration none
-  color #FFF
-  text-align center
-  vendor('transition', all 0.5s ease)
-  background #1ABC9C
-  text-shadow none
-  font-size 12px
-  margin 0 10px 0 0
-  cursor pointer
-  
-a.button-update:hover
-  opacity 0.8
-
 .postForm
   max-width 800px
   word-break break-all
@@ -211,27 +137,7 @@ a.button-update:hover
   textarea.text-edit:focus
     border solid 2px #39AEC6
 
-a.button-post
-  display inline-block
-  width 60px
-  border-radius 3px
-  padding 0px 6px
-  text-decoration none
-  color #FFF
-  text-align center
-  vendor('transition', all 0.5s ease)
-  background #1ABC9C
-  text-shadow none
-  font-size 12px
-  margin 0 10px 0 0
-  line-height 32px
 
-a.button-post:hover
-  opacity 0.8
-
-
-.hidden
-  display none
 
 .loading
   margin 100px auto 0 150px
