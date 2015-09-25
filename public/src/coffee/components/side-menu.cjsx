@@ -1,9 +1,11 @@
-Fluxxor      = require 'fluxxor'
-jade         = require 'react-jade'
-_            = require 'lodash'
-UserProfile  = require './user-profile'
-GuestProfile = require './guest-profile'
-FluxMixin    = Fluxxor.FluxMixin React
+Fluxxor       = require 'fluxxor'
+jade          = require 'react-jade'
+_             = require 'lodash'
+Radium        = require 'radium'
+sideMenuStyle = require './styles/side-menu'
+UserProfile   = require './user-profile'
+GuestProfile  = require './guest-profile'
+FluxMixin     = Fluxxor.FluxMixin React
 
 SideMenu = React.createClass
   mixins : [FluxMixin]
@@ -14,23 +16,23 @@ SideMenu = React.createClass
   render : ->
     if @props.isProfileFetching
       jade.compile("""
-        #side-menu
-          img.logo(src="image/logo.png")
-          i.fa.fa-spinner.fa-spin.loading
+        #side-menu(style=sideMenuStyle.sideMenu)
+          img(src="image/logo.png" style=sideMenuStyle.logo)
+          i.fa.fa-spinner.fa-spin(style=sideMenuStyle.loading)
       """)(_.assign {}, @, @props)
     else
       if @props.profile.error?
         jade.compile("""
-          #side-menu
-            img.logo(src="image/logo.png")
+          #side-menu(style=sideMenuStyle.sideMenu)
+            img(src="image/logo.png" style=sideMenuStyle.logo)
             GuestProfile(avatarImage="image/guest.png")
         """)(_.assign {}, @, @props)
       else
         avatarUrl = "http://gadgtwit.appspot.com/twicon/#{@props.profile.username}/bigger"
         jade.compile("""
-          #side-menu
-            img.logo(src="image/logo.png")
+          #side-menu(style=sideMenuStyle.sideMenu)
+            img(src="image/logo.png" style=sideMenuStyle.logo)
             UserProfile(avatarImage=avatarUrl username=profile.username)
         """)(_.assign {}, @, @props)
 
-module.exports = SideMenu
+module.exports = Radium SideMenu

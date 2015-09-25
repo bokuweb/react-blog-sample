@@ -1,14 +1,16 @@
-jade      = require 'react-jade'
-_         = require 'lodash'
+jade         = require 'react-jade'
+_            = require 'lodash'
+Radium       = require 'radium'
+profileStyle = require './styles/profile'
 
 GuestProfile = React.createClass
   render : ->
     jade.compile("""
-      #profile
-        img.avatar(src=avatarImage)
-        h2.greeting Hello!!
-        p.please-login Plaese login to edit this blog
-        a.button-login(href="./login") Login
+      #profile(style=profileStyle.profile)
+        img(src=avatarImage style=profileStyle.avatar)
+        h2(style=profileStyle.greeting) Hello!!
+        p(style=profileStyle.pleaseLogin) Plaese login to edit this blog
+        a(href="./login" style=profileStyle.loginButton) Login
     """)(_.assign {}, @, @props)
 
 module.exports = GuestProfile

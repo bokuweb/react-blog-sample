@@ -14,8 +14,8 @@ DeleteButton = React.createClass
 
   render : ->
     jade.compile("""
-      a.button-delete(onClick=handleDeleteClick
-                      style=[smallButtonBase, deleteButton]) Delete
+      a(onClick=handleDeleteClick
+        style=[smallButtonBase, deleteButton]) Delete
     """)(_.assign {}, @, @props)
 
 module.exports = Radium DeleteButton

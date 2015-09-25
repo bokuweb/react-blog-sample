@@ -1,6 +1,8 @@
 Fluxxor     = require 'fluxxor'
 jade        = require 'react-jade'
 _           = require 'lodash'
+Radium      = require 'radium'
+blogStyle   = require './styles/blog'
 PostForm    = require './post-form'
 SideMenu    = require './side-menu'
 Article     = require './article'
@@ -27,14 +29,14 @@ Blog = React.createClass
 
   render : ->
     jade.compile("""
-      #container
+      div(style=blogStyle.container)
         SideMenu(profile=profileStore.profile
                  isProfileFetching=profileStore.isProfileFetching)
-        #content
+        div(style=blogStyle.content)
           PostForm(author=profileStore.profile.username)
-          #articles
+          div(style=blogStyle.articles)
             ArticleList(articles=articleStore.articles
                         username=profileStore.profile.username)
     """)(_.assign {}, @, @state)
 
-module.exports = Blog
+module.exports = Radium Blog
