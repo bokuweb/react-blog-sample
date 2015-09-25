@@ -1,7 +1,11 @@
-Fluxxor   = require 'fluxxor'
-jade      = require 'react-jade'
-_         = require 'lodash'
-FluxMixin = Fluxxor.FluxMixin React
+Fluxxor         = require 'fluxxor'
+jade            = require 'react-jade'
+_               = require 'lodash'
+Radium          = require 'radium'
+smallButtonBase = require './styles/small-button-base'
+postButton      = require './styles/post-button'
+editBox         = require './styles/edit-box'
+FluxMixin       = Fluxxor.FluxMixin React
 
 EditBox = React.createClass
   mixins : [FluxMixin]
@@ -26,12 +30,13 @@ EditBox = React.createClass
     @getFlux().actions.article.updateArticle @props.article._id, article
 
   render : ->
-    showIfEditing = if @props.article.isEditing then "editing" else ""
+    #showIfEditing = if @props.article.isEditing then "editing" else ""
+    editorStyle = if @props.article.isEditing then editBox.editing else editBox.notEditing
     jade.compile("""
-      div.editor(class=showIfEditing)
-        input.title-edit(ref="editingTitle" value=article.editingTitle onChange=editTitle)
-        textarea.text-edit(ref="editingText" value=article.editingText onChange=editText)
-        a.button-update(onClick=handleUpdateClick) Update
+      div(style=editorStyle)
+        input(ref="editingTitle" value=article.editingTitle onChange=editTitle style=editBox.titleEditor)
+        textarea(ref="editingText" value=article.editingText onChange=editText style=editBox.textEditor)
+        a(onClick=handleUpdateClick style=[smallButtonBase, postButton]) Update
     """)(_.assign {}, @, @props)
-    
-module.exports = EditBox
+
+module.exports = Radium EditBox

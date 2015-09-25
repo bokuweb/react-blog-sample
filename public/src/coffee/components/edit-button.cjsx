@@ -1,7 +1,11 @@
-Fluxxor   = require 'fluxxor'
-jade      = require 'react-jade'
-_         = require 'lodash'
-FluxMixin = Fluxxor.FluxMixin React
+Fluxxor         = require 'fluxxor'
+jade            = require 'react-jade'
+_               = require 'lodash'
+Radium          = require 'radium'
+smallButtonBase = require './styles/small-button-base'
+editButton      = require './styles/edit-button'
+cancelButton    = require './styles/cancel-button'
+FluxMixin       = Fluxxor.FluxMixin React
 
 EditButton = React.createClass
   mixins : [FluxMixin]
@@ -11,8 +15,15 @@ EditButton = React.createClass
 
   render : ->
     if @props.article.isEditing
-      jade.compile("a.button-editing(onClick=handleEditClick) cancel")(_.assign {}, @, @props)
+      jade.compile("""
+        a.button-editing(onClick=handleEditClick
+                         style=[smallButtonBase, cancelButton]) Cancel
+      """)(_.assign {}, @, @props)
     else
-      jade.compile("a.button-edit(onClick=handleEditClick) Edit")(_.assign {}, @, @props)
+      jade.compile("""
+        a.button-edit(onClick=handleEditClick
+                      style=[smallButtonBase, editButton]) Edit
+      """)(_.assign {}, @, @props)
 
-module.exports = EditButton
+
+module.exports = Radium EditButton

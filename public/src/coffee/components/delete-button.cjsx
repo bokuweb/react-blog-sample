@@ -1,6 +1,9 @@
 jade            = require 'react-jade'
 _               = require 'lodash'
 Fluxxor         = require 'fluxxor'
+Radium          = require 'radium'
+smallButtonBase = require './styles/small-button-base'
+deleteButton    = require './styles/delete-button'
 FluxMixin       = Fluxxor.FluxMixin React
 
 DeleteButton = React.createClass
@@ -10,6 +13,9 @@ DeleteButton = React.createClass
     @getFlux().actions.article.deleteArticle @props.article._id
 
   render : ->
-    jade.compile("a.button-delete(onClick=handleDeleteClick) Delete")(_.assign {}, @, @props)
+    jade.compile("""
+      a(onClick=handleDeleteClick
+        style=[smallButtonBase, deleteButton]) Delete
+    """)(_.assign {}, @, @props)
 
-module.exports = DeleteButton
+module.exports = Radium DeleteButton

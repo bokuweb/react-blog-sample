@@ -1,8 +1,12 @@
-Fluxxor   = require 'fluxxor'
-jade      = require 'react-jade'
-_         = require 'lodash'
+Fluxxor         = require 'fluxxor'
+jade            = require 'react-jade'
+_               = require 'lodash'
+Radium          = require 'radium'
+smallButtonBase = require './styles/small-button-base'
+postButton      = require './styles/post-button'
+postForm        = require './styles/post-form'
 
-FluxMixin = Fluxxor.FluxMixin React
+FluxMixin       = Fluxxor.FluxMixin React
 
 PostForm = React.createClass
   mixins : [FluxMixin]
@@ -24,13 +28,13 @@ PostForm = React.createClass
   render : ->
     if @props.author
       jade.compile("""
-        .postForm
+        .postForm(style=postForm.postForm)
           h1 Add New Post
-          input.title-edit(placeholder="title" ref="title")
-          textarea.text-edit(ref="text")
-          a.button-post(href="#" onClick=handleSubmit) Post
+          input(placeholder="title" ref="title" style=postForm.titleEditor)
+          textarea.text-edit(ref="text" style=postForm.textEditor)
+          a(href="#" onClick=handleSubmit style=[smallButtonBase, postButton]) Post
       """)(_.assign {}, @, @props)
     else
       jade.compile("div")()
 
-module.exports = PostForm
+module.exports = Radium PostForm

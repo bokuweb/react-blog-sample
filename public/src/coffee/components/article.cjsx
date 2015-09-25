@@ -1,5 +1,8 @@
 Fluxxor         = require 'fluxxor'
 marked          = require 'marked'
+Radium          = require 'radium'
+articleStyle    = require './styles/article'
+commonStyle     = require './styles/common'
 PostInformation = require './post-information'
 EditButton      = require './edit-button'
 DeleteButton    = require './delete-button'
@@ -24,8 +27,8 @@ Article = React.createClass
 
     hiddenUnlessAuthor = if @props.article._id? and @props.article.author is @props.username then "" else "hidden"
     jade.compile("""
-      .article
-        h1.title= article.title
+      div(style=articleStyle.article)
+        h1(style=commonStyle.h1)= article.title
         PostInformation(article=article)
         span(dangerouslySetInnerHTML={__html: rawMarkup})
         div.article-footer(class=hiddenUnlessAuthor)
@@ -34,4 +37,4 @@ Article = React.createClass
         EditBox(article=article)
     """)(_.assign {}, @, @props)
 
-module.exports = Article
+module.exports = Radium Article
