@@ -19,6 +19,15 @@ gulp.task 'build:front', watchify (watchify) ->
       extname: ".js"
     .pipe gulp.dest 'public/dist'
 
+gulp.task 'build:test', watchify (watchify) ->
+  gulp.src './test/coffee/*.coffee'
+    .pipe plumber()
+    .pipe watchify
+      watch     : watching
+      extensions: ['.coffee', '.js', '.cjsx']
+    .pipe rename
+      extname: ".js"
+    .pipe gulp.dest './test/js'
 
 gulp.task 'build:server', ->
   gulp.src ['*.coffee', '*/*.coffee', '*/*/*.coffee', '!gulpfile.coffee']
@@ -33,7 +42,7 @@ gulp.task 'build:stylus', ->
       compress: true
     .pipe gulp.dest 'public/stylesheets'
 
-gulp.task 'watch', ['enable-watch-mode', 'build:front'], ->
+gulp.task 'watch', ['enable-watch-mode', 'build:front', 'build:test'], ->
   gulp.watch ['*.coffee', '*/*.coffee'], ['build:server']
   gulp.watch ['public/styl/*.styl'], ['build:stylus']
 
