@@ -1,6 +1,7 @@
 Fluxxor         = require 'fluxxor'
 marked          = require 'marked'
 Radium          = require 'radium'
+
 articleStyle    = require './styles/article'
 commonStyle     = require './styles/common'
 PostInformation = require './post-information'
@@ -11,6 +12,9 @@ jade            = require 'react-jade'
 _               = require 'lodash'
 
 FluxMixin       = Fluxxor.FluxMixin React
+
+
+
 
 Article = React.createClass
   mixins : [FluxMixin]

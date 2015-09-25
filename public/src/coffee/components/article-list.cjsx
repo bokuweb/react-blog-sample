@@ -7,7 +7,9 @@ ArticleList = React.createClass
     if @props.articles.length > 0
       articleNodes = @props.articles.map (article) =>
         jade.compile("""
-          Article(article=article key=article._id username=username)= article.text
+          Article(article=article
+                  key=article._id
+                  username=username)= article.text
         """)(_.assign {}, @, @props)
       jade.compile("div=articleNodes")()
     else

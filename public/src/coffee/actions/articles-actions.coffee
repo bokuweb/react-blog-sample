@@ -31,8 +31,13 @@ module.exports =
       error : (xhr, status, err) ->
         console.error "/api/v1/save", status, err.toString()
 
+  showDeleteModal : (id) ->
+    @dispatch constants.SHOW_DELETE_MODAL, {id : id}
+
+  closeDeleteModal : ->
+    @dispatch constants.CLOSE_DELETE_MODAL
+    
   deleteArticle : (id) ->
-    console.log id
     $.ajax
       url: "/api/v1/delete"
       dataType: 'json'
