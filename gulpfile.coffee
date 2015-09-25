@@ -30,7 +30,7 @@ gulp.task 'build:test', watchify (watchify) ->
     .pipe gulp.dest './test/js'
 
 gulp.task 'build:server', ->
-  gulp.src ['*.coffee', '*/*.coffee', '*/*/*.coffee', '!gulpfile.coffee']
+  gulp.src ['*.coffee', '*/*.coffee', '*/*/*.coffee', '!gulpfile.coffee', '!node_modules/*/*.coffee']
     .pipe plumber()
     .pipe coffee()
     .pipe gulp.dest ''
