@@ -11,6 +11,7 @@ ArticleList   = require './article-list'
 modalStyles   = require './styles/modal'
 deleteOkStyle = require './styles/delete-ok-button'
 SmallButton   = require './small-button'
+PostPreview   = require './post-preview'
 
 FluxMixin       = Fluxxor.FluxMixin React
 StoreWatchMixin = Fluxxor.StoreWatchMixin
@@ -43,6 +44,7 @@ Blog = React.createClass
     @getFlux().actions.article.closeDeleteModal()
 
   render : ->
+    # FIXME : refactor
     jade.compile("""
       div(style=blogStyle.container)
         SideMenu(profile=profileStore.profile
@@ -51,6 +53,9 @@ Blog = React.createClass
           PostForm(author=profileStore.profile.username
                    title=PostFormStore.title
                    text=PostFormStore.text)
+          PostPreview(author=profileStore.profile.username
+                      title=PostFormStore.title
+                      text=PostFormStore.text)
           div(style=blogStyle.articles)
             ArticleList(articles=articleStore.articles
                         username=profileStore.profile.username)
