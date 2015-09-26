@@ -1,6 +1,7 @@
 constants = require '../constants/constants'
 Q         = require 'q'
 
+# FIXME : refactor
 _fetch = ->
   d = Q.defer()
   $.ajax

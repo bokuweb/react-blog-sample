@@ -19,14 +19,15 @@ StoreWatchMixin = Fluxxor.StoreWatchMixin
 Blog = React.createClass
   mixins : [
     FluxMixin
-    StoreWatchMixin "ArticlesStore", "ProfileStore"
+    StoreWatchMixin "ArticlesStore", "ProfileStore", "PostFormStore"
   ]
 
   getStateFromFlux : ->
     flux = @getFlux()
     {
-      articleStore : flux.store("ArticlesStore").getArticles()
-      profileStore : flux.store("ProfileStore").getState()
+      articleStore  : flux.store("ArticlesStore").getArticles()
+      profileStore  : flux.store("ProfileStore").getState()
+      PostFormStore : flux.store("PostFormStore").getState()
     }
 
   componentDidMount : ->
@@ -47,7 +48,9 @@ Blog = React.createClass
         SideMenu(profile=profileStore.profile
                  isProfileFetching=profileStore.isProfileFetching)
         div(style=blogStyle.content)
-          PostForm(author=profileStore.profile.username)
+          PostForm(author=profileStore.profile.username
+                   title=PostFormStore.title
+                   text=PostFormStore.text)
           div(style=blogStyle.articles)
             ArticleList(articles=articleStore.articles
                         username=profileStore.profile.username)
@@ -67,6 +70,7 @@ Blog = React.createClass
             handleClick=handleDeleteCancelClick
             buttonStyle=deleteOkStyle
           )
+
     """)(_.assign {}, @, @state)
 
 module.exports = Radium Blog
