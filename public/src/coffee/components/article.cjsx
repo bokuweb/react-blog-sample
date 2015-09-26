@@ -33,13 +33,14 @@ Article = React.createClass
     hiddenUnlessAuthor = if @props.article._id? and @props.article.author is @props.username then {} else commonStyle.hidden
     jade.compile("""
       div(style=style)
-        h1(style=commonStyle.h1)= article.title
-        PostInformation(article=article)
-        span(dangerouslySetInnerHTML={__html: rawMarkup})
-        div(style=hiddenUnlessAuthor)
-          DeleteButton(article=article)
-          EditButton(article=article)
-        EditBox(article=article)
+        div.animated.fadeInUp
+          h1(style=commonStyle.h1)= article.title
+          PostInformation(article=article)
+          span(dangerouslySetInnerHTML={__html: rawMarkup})
+          div(style=hiddenUnlessAuthor)
+            DeleteButton(article=article)
+            EditButton(article=article)
+          EditBox(article=article)
     """)(_.assign {}, @, @props)
 
 module.exports = Radium Article
