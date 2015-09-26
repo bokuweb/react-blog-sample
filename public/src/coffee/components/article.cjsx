@@ -25,6 +25,8 @@ Article = React.createClass
       pedantic : false
       sanitize : true
       smartLists : true
+
+    # if editing real time preview edit text and title
     if @props.article.isEditing
       rawMarkup = marked @props.article.editingText, option
       title =  @props.article.editingTitle
@@ -32,6 +34,7 @@ Article = React.createClass
       rawMarkup = marked @props.children.toString(), option
       title =  @props.article.title
 
+    # set delted style if post deleted
     style = if @props.article.isDeleted
       [articleStyle.article, articleStyle.articleDeleted]
     else articleStyle.article
