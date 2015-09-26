@@ -1,6 +1,7 @@
 module.exports =
   container :
     height : "100%"
+    width : "100%"
     display : "box"
     flexDirection : "row"
     boxOrient : "horizontal"
@@ -13,9 +14,12 @@ module.exports =
     boxFlex : 1
     textShadow : "-1px 1px 0 rgba(255, 255, 255, 1)"
     color : "#45828E"
+    width : "100%"
+    overflowX : "auto"
     '@media (min-width : 769px)':
       overflowY : "auto"
       maxHeight : "100%"
+      width : "100%"
 
   articles :
     maxWidth : "800px"

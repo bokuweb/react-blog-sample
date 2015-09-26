@@ -36,8 +36,9 @@ module.exports =
 
   closeDeleteModal : ->
     @dispatch constants.CLOSE_DELETE_MODAL
-    
+
   deleteArticle : (id) ->
+    console.log id
     $.ajax
       url: "/api/v1/delete"
       dataType: 'json'

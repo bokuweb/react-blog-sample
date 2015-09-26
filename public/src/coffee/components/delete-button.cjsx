@@ -10,7 +10,6 @@ DeleteButton = React.createClass
   mixins : [FluxMixin]
   handleDeleteClick : (e) ->
     e.preventDefault()
-    #@getFlux().actions.article.deleteArticle @props.article._id
     @getFlux().actions.article.showDeleteModal @props.article._id
 
   render : ->

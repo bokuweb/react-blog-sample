@@ -42,6 +42,7 @@ ArticlesStore = Fluxxor.createStore
       # delete article
       @articles.splice i , 1
       break
+    @isDeleteModalOpen = false
     @emit "change"
 
   onEditArticle : (payload) ->
@@ -84,5 +85,6 @@ ArticlesStore = Fluxxor.createStore
   getArticles : ->
     articles : @articles
     isDeleteModalOpen : @isDeleteModalOpen
+    deleteId : @deleteId
 
 module.exports = ArticlesStore

@@ -1,14 +1,16 @@
-Fluxxor     = require 'fluxxor'
-jade        = require 'react-jade'
-_           = require 'lodash'
-Radium      = require 'radium'
-Modal       = require 'react-modal'
-blogStyle   = require './styles/blog'
-PostForm    = require './post-form'
-SideMenu    = require './side-menu'
-Article     = require './article'
-ArticleList = require './article-list'
-modalStyles = require './styles/modal'
+Fluxxor       = require 'fluxxor'
+jade          = require 'react-jade'
+_             = require 'lodash'
+Radium        = require 'radium'
+Modal         = require 'react-modal'
+blogStyle     = require './styles/blog'
+PostForm      = require './post-form'
+SideMenu      = require './side-menu'
+Article       = require './article'
+ArticleList   = require './article-list'
+modalStyles   = require './styles/modal'
+deleteOkStyle = require './styles/delete-ok-button'
+SmallButton   = require './small-button'
 
 FluxMixin       = Fluxxor.FluxMixin React
 StoreWatchMixin = Fluxxor.StoreWatchMixin
@@ -33,6 +35,12 @@ Blog = React.createClass
   closeDeleteModal : ->
     @getFlux().actions.article.closeDeleteModal()
 
+  handleDeleteOkClick : ->
+    @getFlux().actions.article.deleteArticle @state.articleStore.deleteId
+
+  handleDeleteCancelClick : ->
+    @getFlux().actions.article.closeDeleteModal()
+
   render : ->
     jade.compile("""
       div(style=blogStyle.container)
@@ -48,6 +56,17 @@ Blog = React.createClass
           onRequestClose=closeDeleteModal
           style=modalStyles)
           span delete this post, really ok?
+          br
+          SmallButton(
+            buttonText="Ok"
+            handleClick=handleDeleteOkClick
+            buttonStyle=deleteOkStyle
+          )
+          SmallButton(
+            buttonText="Cancel"
+            handleClick=handleDeleteCancelClick
+            buttonStyle=deleteOkStyle
+          )
     """)(_.assign {}, @, @state)
 
 module.exports = Radium Blog

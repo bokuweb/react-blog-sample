@@ -12,8 +12,8 @@ module.exports =
     margin : "30px 0 0 0"
 
   titleEditor :
-    width : "95%"
-    width : "calc(100% - 30px)"
+    width : "80%"
+    width : "calc(100% - 100px)"
     padding : "10px"
     fontSize : "90%"
     borderRadius : "5px"
@@ -26,8 +26,8 @@ module.exports =
 
   textEditor :
     margin : "30px 0 0 0"
-    width : "95%"
-    width : "calc(100% - 30px)"
+    width : "80%"
+    width : "calc(100% - 100px)"
     padding : "10px"
     fontSize : "90%"
     borderRadius : "5px"
