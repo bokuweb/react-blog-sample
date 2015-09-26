@@ -17,7 +17,7 @@ Article = React.createClass
   mixins : [FluxMixin]
 
   render : ->
-    rawMarkup = marked @props.children.toString(),
+    option =
       renderer : new marked.Renderer()
       gfm : true
       tables : true
@@ -25,6 +25,12 @@ Article = React.createClass
       pedantic : false
       sanitize : true
       smartLists : true
+    if @props.article.isEditing
+      rawMarkup = marked @props.article.editingText, option
+      title =  @props.article.editingTitle
+    else
+      rawMarkup = marked @props.children.toString(), option
+      title =  @props.article.title
 
     style = if @props.article.isDeleted
       [articleStyle.article, articleStyle.articleDeleted]
@@ -34,7 +40,7 @@ Article = React.createClass
     jade.compile("""
       div(style=style)
         div.animated.fadeInUp
-          h1(style=commonStyle.h1)= article.title
+          h1(style=commonStyle.h1)= title
           PostInformation(article=article)
           span(dangerouslySetInnerHTML={__html: rawMarkup})
           div(style=hiddenUnlessAuthor)
