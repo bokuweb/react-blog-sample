@@ -40,7 +40,8 @@ ArticlesStore = Fluxxor.createStore
     return unless payload.id?
     for article, i in @articles when article._id is payload.id
       # delete article
-      @articles.splice i , 1
+      #@articles.splice i , 1
+      article.isDeleted = true
       break
     @isDeleteModalOpen = false
     @emit "change"

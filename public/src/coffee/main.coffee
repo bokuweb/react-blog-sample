@@ -1,4 +1,4 @@
-window.React    = require 'react'
+window.React    = require 'react/addons'
 Fluxxor         = require 'fluxxor'
 ArticlesStore   = require './stores/article-store'
 ProfileStore    = require './stores/profile-store'

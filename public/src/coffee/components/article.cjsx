@@ -13,9 +13,6 @@ _               = require 'lodash'
 
 FluxMixin       = Fluxxor.FluxMixin React
 
-
-
-
 Article = React.createClass
   mixins : [FluxMixin]
 
@@ -29,9 +26,13 @@ Article = React.createClass
       sanitize : true
       smartLists : true
 
+    style = if @props.article.isDeleted
+      [articleStyle.article, articleStyle.articleDeleted]
+    else articleStyle.article
+
     hiddenUnlessAuthor = if @props.article._id? and @props.article.author is @props.username then {} else commonStyle.hidden
     jade.compile("""
-      div(style=articleStyle.article)
+      div(style=style)
         h1(style=commonStyle.h1)= article.title
         PostInformation(article=article)
         span(dangerouslySetInnerHTML={__html: rawMarkup})
