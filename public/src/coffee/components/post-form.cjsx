@@ -1,38 +1,51 @@
-Fluxxor         = require 'fluxxor'
-jade            = require 'react-jade'
-_               = require 'lodash'
-Radium          = require 'radium'
-smallButtonBase = require './styles/small-button-base'
-postButton      = require './styles/post-button'
-postForm        = require './styles/post-form'
+Fluxxor            = require 'fluxxor'
+jade               = require 'react-jade'
+_                  = require 'lodash'
+Radium             = require 'radium'
+smallButtonBase    = require './styles/small-button-base'
+postButton         = require './styles/post-button'
+postButton_disable = require './styles/post-button-disable'
+postForm           = require './styles/post-form'
+commonStyle        = require './styles/common'
 
-FluxMixin       = Fluxxor.FluxMixin React
+FluxMixin = Fluxxor.FluxMixin React
 
 PostForm = React.createClass
   mixins : [FluxMixin]
+
+  enterTitle : (e) ->
+    @getFlux().actions.postForm.enterTitle e.target.value
+
+  enterText : (e) ->
+    @getFlux().actions.postForm.enterText e.target.value
+
+  isEnteredTitleAndTextByUser : ->
+    @props.text and @props.title and @props.author?
+
   handleSubmit : (e) ->
     e.preventDefault()
-    title = React.findDOMNode(@refs.title).value.trim()
-    text = React.findDOMNode(@refs.text).value.trim()
-    return if not text or not title or not @props.author?
+    return if not @isEnteredTitleAndTextByUser()
     article =
-      title     : title
+      title     : @props.title
       author    : @props.author
-      text      : text
+      text      : @props.text
       createdAt : new Date()
       updatedAt : new Date()
-    React.findDOMNode(@refs.title).value = ''
-    React.findDOMNode(@refs.text).value = ''
-    @getFlux().actions.article.saveArticle article
+    @getFlux().actions.postForm.saveArticle article
 
   render : ->
+    if @isEnteredTitleAndTextByUser()
+      postButtonStyle = [smallButtonBase, postButton]
+    else
+      postButtonStyle = [smallButtonBase, postButton_disable]
+
     if @props.author
       jade.compile("""
         div(style=postForm.postForm)
-          h1 Add New Post
-          input(placeholder="title" ref="title" style=postForm.titleEditor)
-          textarea.text-edit(ref="text" style=postForm.textEditor)
-          a(href="#" onClick=handleSubmit style=[smallButtonBase, postButton]) Post
+          h1(style=commonStyle.h1) Add New Post
+          input(placeholder="title" ref="title" style=postForm.titleEditor value=title onChange=enterTitle)
+          textarea(ref="text" style=postForm.textEditor value=text onChange=enterText)
+          a(href="#" onClick=handleSubmit style=postButtonStyle) Post
       """)(_.assign {}, @, @props)
     else
       jade.compile("div")()

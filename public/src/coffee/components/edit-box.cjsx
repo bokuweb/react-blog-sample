@@ -30,7 +30,6 @@ EditBox = React.createClass
     @getFlux().actions.article.updateArticle @props.article._id, article
 
   render : ->
-    #showIfEditing = if @props.article.isEditing then "editing" else ""
     editorStyle = if @props.article.isEditing then editBox.editing else editBox.notEditing
     jade.compile("""
       div(style=editorStyle)
