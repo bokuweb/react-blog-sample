@@ -1,6 +1,7 @@
 Fluxxor         = require 'fluxxor'
 marked          = require 'marked'
 Radium          = require 'radium'
+
 articleStyle    = require './styles/article'
 commonStyle     = require './styles/common'
 PostInformation = require './post-information'
@@ -11,6 +12,9 @@ jade            = require 'react-jade'
 _               = require 'lodash'
 
 FluxMixin       = Fluxxor.FluxMixin React
+
+
+
 
 Article = React.createClass
   mixins : [FluxMixin]
@@ -25,13 +29,13 @@ Article = React.createClass
       sanitize : true
       smartLists : true
 
-    hiddenUnlessAuthor = if @props.article._id? and @props.article.author is @props.username then "" else "hidden"
+    hiddenUnlessAuthor = if @props.article._id? and @props.article.author is @props.username then {} else commonStyle.hidden
     jade.compile("""
       div(style=articleStyle.article)
         h1(style=commonStyle.h1)= article.title
         PostInformation(article=article)
         span(dangerouslySetInnerHTML={__html: rawMarkup})
-        div.article-footer(class=hiddenUnlessAuthor)
+        div(style=hiddenUnlessAuthor)
           DeleteButton(article=article)
           EditButton(article=article)
         EditBox(article=article)

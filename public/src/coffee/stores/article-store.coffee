@@ -4,6 +4,8 @@ constants = require '../constants/constants'
 ArticlesStore = Fluxxor.createStore
   initialize : ->
     @articles = []
+    @deleteId = null
+    @isDeleteModalOpen = false
     @bindActions constants.FETCH_ARTICLES, @onFetchArticles
     @bindActions constants.POST_ARTICLE, @onPostArticle
     @bindActions constants.DELETE_ARTICLE, @onDeleteArticle
@@ -11,6 +13,8 @@ ArticlesStore = Fluxxor.createStore
     @bindActions constants.EDIT_TITLE, @onEditTitle
     @bindActions constants.EDIT_TEXT, @onEditText
     @bindActions constants.UPDATE_ARTICLE, @onUpdateArticle
+    @bindActions constants.SHOW_DELETE_MODAL, @showDeleteModal
+    @bindActions constants.CLOSE_DELETE_MODAL, @closeDeleteModal
 
   onFetchArticles : (payload) ->
     @articles = payload.articles
@@ -23,12 +27,22 @@ ArticlesStore = Fluxxor.createStore
     @articles = [payload.article].concat @articles
     @emit "change"
 
+  showDeleteModal : (payload) ->
+    @deleteId = payload.id
+    @isDeleteModalOpen = true
+    @emit "change"
+
+  closeDeleteModal : ->
+    @isDeleteModalOpen = false
+    @emit "change"
+
   onDeleteArticle : (payload) ->
     return unless payload.id?
     for article, i in @articles when article._id is payload.id
       # delete article
       @articles.splice i , 1
       break
+    @isDeleteModalOpen = false
     @emit "change"
 
   onEditArticle : (payload) ->
@@ -65,11 +79,12 @@ ArticlesStore = Fluxxor.createStore
       article.text = payload.article.text
       article.updatedAt = payload.article.updatedAt
       break
-    console.dir @articles
     @emit "change"
 
 
   getArticles : ->
-    {articles : @articles}
+    articles : @articles
+    isDeleteModalOpen : @isDeleteModalOpen
+    deleteId : @deleteId
 
 module.exports = ArticlesStore

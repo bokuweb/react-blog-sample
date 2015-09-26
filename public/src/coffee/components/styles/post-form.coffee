@@ -1,6 +1,7 @@
 module.exports =
-  postForm : 
+  postForm :
     maxWidth : "800px"
+    width : "100%"
     wordBreak : "break-all"
     padding : "20px 30px 10px 30px"
 

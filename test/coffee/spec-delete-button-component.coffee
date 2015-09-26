@@ -18,4 +18,3 @@ describe "MenuListComponent view test", ->
     assert.equal React.findDOMNode(component).textContent, "Delete"
 
 
-

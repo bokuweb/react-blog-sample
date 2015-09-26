@@ -1,15 +1,20 @@
-Fluxxor     = require 'fluxxor'
-jade        = require 'react-jade'
-_           = require 'lodash'
-Radium      = require 'radium'
-blogStyle   = require './styles/blog'
-PostForm    = require './post-form'
-SideMenu    = require './side-menu'
-Article     = require './article'
-ArticleList = require './article-list'
+Fluxxor       = require 'fluxxor'
+jade          = require 'react-jade'
+_             = require 'lodash'
+Radium        = require 'radium'
+Modal         = require 'react-modal'
+blogStyle     = require './styles/blog'
+PostForm      = require './post-form'
+SideMenu      = require './side-menu'
+Article       = require './article'
+ArticleList   = require './article-list'
+modalStyles   = require './styles/modal'
+deleteOkStyle = require './styles/delete-ok-button'
+SmallButton   = require './small-button'
 
 FluxMixin       = Fluxxor.FluxMixin React
 StoreWatchMixin = Fluxxor.StoreWatchMixin
+
 
 Blog = React.createClass
   mixins : [
@@ -18,7 +23,7 @@ Blog = React.createClass
   ]
 
   getStateFromFlux : ->
-    flux = this.getFlux()
+    flux = @getFlux()
     {
       articleStore : flux.store("ArticlesStore").getArticles()
       profileStore : flux.store("ProfileStore").getState()
@@ -26,6 +31,15 @@ Blog = React.createClass
 
   componentDidMount : ->
     @getFlux().actions.article.fetchArticles()
+
+  closeDeleteModal : ->
+    @getFlux().actions.article.closeDeleteModal()
+
+  handleDeleteOkClick : ->
+    @getFlux().actions.article.deleteArticle @state.articleStore.deleteId
+
+  handleDeleteCancelClick : ->
+    @getFlux().actions.article.closeDeleteModal()
 
   render : ->
     jade.compile("""
@@ -37,6 +51,22 @@ Blog = React.createClass
           div(style=blogStyle.articles)
             ArticleList(articles=articleStore.articles
                         username=profileStore.profile.username)
+        Modal(
+          isOpen=articleStore.isDeleteModalOpen
+          onRequestClose=closeDeleteModal
+          style=modalStyles)
+          span delete this post, really ok?
+          br
+          SmallButton(
+            buttonText="Ok"
+            handleClick=handleDeleteOkClick
+            buttonStyle=deleteOkStyle
+          )
+          SmallButton(
+            buttonText="Cancel"
+            handleClick=handleDeleteCancelClick
+            buttonStyle=deleteOkStyle
+          )
     """)(_.assign {}, @, @state)
 
 module.exports = Radium Blog

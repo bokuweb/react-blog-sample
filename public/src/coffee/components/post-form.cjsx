@@ -28,7 +28,7 @@ PostForm = React.createClass
   render : ->
     if @props.author
       jade.compile("""
-        .postForm(style=postForm.postForm)
+        div(style=postForm.postForm)
           h1 Add New Post
           input(placeholder="title" ref="title" style=postForm.titleEditor)
           textarea.text-edit(ref="text" style=postForm.textEditor)
