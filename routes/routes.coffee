@@ -80,25 +80,22 @@ configRoutes = (app, passport) ->
         sort : {'updatedAt':-1}
         limit : 50
       }
-      .then (docs) =>
-        console.log docs
-        res.json docs
+      .then (docs) => res.json docs
 
   app.get '/api/v1/search/:page/:word?', (req, res) ->
     word = req.params.word
+    condition = []
     if word?
       word = word.replace(/　/g," ")
       words = word.split " "
-      condition = []
       for w in words when w isnt ''
         w = _pregQuote w
         condition.push {title : new RegExp w, "i"}
         condition.push {text : new RegExp w, "i"}
+        condition.push {author : new RegExp w, "i"}
 
-    if condition.length is 0
-      q = {}
-    else
-      q = {$or : condition}
+    q = if condition.length is 0 then {}
+    else {$or : condition}
 
     articleDB.search {
         q : q
@@ -106,9 +103,7 @@ configRoutes = (app, passport) ->
         limit : 50
         page : req.params.page
       }
-      .then (docs) =>
-        console.log docs
-        res.json docs
+      .then (docs) => res.json docs
 
   app.get '/api/v1/profile', (req, res) ->
     if req.session?.passport?.user?

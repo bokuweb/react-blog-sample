@@ -6,7 +6,9 @@ ArticlesStore = Fluxxor.createStore
     @articles = []
     @deleteId = null
     @isDeleteModalOpen = false
+    @search = ""
     @bindActions constants.FETCH_ARTICLES, @onFetchArticles
+    @bindActions constants.SEARCH_ARTICLES, @onSearchArticles
     @bindActions constants.POST_ARTICLE, @onPostArticle
     @bindActions constants.DELETE_ARTICLE, @onDeleteArticle
     @bindActions constants.EDIT_ARTICLE, @onEditArticle
@@ -16,8 +18,14 @@ ArticlesStore = Fluxxor.createStore
     @bindActions constants.SHOW_DELETE_MODAL, @showDeleteModal
     @bindActions constants.CLOSE_DELETE_MODAL, @closeDeleteModal
 
+  onSearchArticles : (payload) ->
+    @articles = payload.articles
+    @search = payload.word
+    @emit "change"
+
   onFetchArticles : (payload) ->
     @articles = payload.articles
+    @search = ""
     @emit "change"
 
   onPostArticle : (payload) ->
@@ -87,5 +95,6 @@ ArticlesStore = Fluxxor.createStore
     articles : @articles
     isDeleteModalOpen : @isDeleteModalOpen
     deleteId : @deleteId
+    search : @search
 
 module.exports = ArticlesStore

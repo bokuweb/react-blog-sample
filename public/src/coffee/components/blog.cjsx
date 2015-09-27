@@ -48,7 +48,8 @@ Blog = React.createClass
     jade.compile("""
       div(style=blogStyle.container)
         SideMenu(profile=profileStore.profile
-                 isProfileFetching=profileStore.isProfileFetching)
+                 isProfileFetching=profileStore.isProfileFetching
+                 search=articleStore.search)
         div(style=blogStyle.content)
           PostForm(author=profileStore.profile.username
                    title=PostFormStore.title

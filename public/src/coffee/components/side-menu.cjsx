@@ -5,6 +5,7 @@ Radium        = require 'radium'
 sideMenuStyle = require './styles/side-menu'
 UserProfile   = require './user-profile'
 GuestProfile  = require './guest-profile'
+SearchBox     = require './search-box'
 FluxMixin     = Fluxxor.FluxMixin React
 
 SideMenu = React.createClass
@@ -33,6 +34,7 @@ SideMenu = React.createClass
           #side-menu(style=sideMenuStyle.sideMenu)
             img(src="image/logo.png" style=sideMenuStyle.logo)
             UserProfile(avatarImage=avatarUrl username=profile.username)
+            SearchBox(search=search)
         """)(_.assign {}, @, @props)
 
 module.exports = Radium SideMenu
