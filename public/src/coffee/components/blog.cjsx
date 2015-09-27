@@ -2,20 +2,16 @@ Fluxxor       = require 'fluxxor'
 jade          = require 'react-jade'
 _             = require 'lodash'
 Radium        = require 'radium'
-Modal         = require 'react-modal'
 blogStyle     = require './styles/blog'
 PostForm      = require './post-form'
 SideMenu      = require './side-menu'
 Article       = require './article'
 ArticleList   = require './article-list'
-modalStyles   = require './styles/modal'
-deleteOkStyle = require './styles/delete-ok-button'
-SmallButton   = require './small-button'
 PostPreview   = require './post-preview'
+DeleteModal   = require './delete-modal'
 
 FluxMixin       = Fluxxor.FluxMixin React
 StoreWatchMixin = Fluxxor.StoreWatchMixin
-
 
 Blog = React.createClass
   mixins : [
@@ -34,17 +30,7 @@ Blog = React.createClass
   componentDidMount : ->
     @getFlux().actions.article.fetchArticles()
 
-  closeDeleteModal : ->
-    @getFlux().actions.article.closeDeleteModal()
-
-  handleDeleteOkClick : ->
-    @getFlux().actions.article.deleteArticle @state.articleStore.deleteId
-
-  handleDeleteCancelClick : ->
-    @getFlux().actions.article.closeDeleteModal()
-
   render : ->
-    # FIXME : refactor
     jade.compile("""
       div(style=blogStyle.container)
         SideMenu(profile=profileStore.profile
@@ -60,23 +46,8 @@ Blog = React.createClass
           div(style=blogStyle.articles)
             ArticleList(articles=articleStore.articles
                         username=profileStore.profile.username)
-        Modal(
-          isOpen=articleStore.isDeleteModalOpen
-          onRequestClose=closeDeleteModal
-          style=modalStyles)
-          span delete this post, really ok?
-          br
-          SmallButton(
-            buttonText="Ok"
-            handleClick=handleDeleteOkClick
-            buttonStyle=deleteOkStyle
-          )
-          SmallButton(
-            buttonText="Cancel"
-            handleClick=handleDeleteCancelClick
-            buttonStyle=deleteOkStyle
-          )
-
+        DeleteModal(isDeleteModalOpen=articleStore.isDeleteModalOpen
+                    deleteId=articleStore.deleteId)
     """)(_.assign {}, @, @state)
 
 module.exports = Radium Blog

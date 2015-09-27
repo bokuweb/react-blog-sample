@@ -13,6 +13,6 @@ ArticleList = React.createClass
         """)(_.assign {}, @, @props)
       jade.compile("div=articleNodes")()
     else
-      jade.compile("h1 There are yet no article...")()
+      jade.compile("h1 There are no article...")()
 
 module.exports = ArticleList
