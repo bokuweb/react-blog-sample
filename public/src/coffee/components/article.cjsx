@@ -1,7 +1,6 @@
 Fluxxor         = require 'fluxxor'
 marked          = require 'marked'
 Radium          = require 'radium'
-
 articleStyle    = require './styles/article'
 commonStyle     = require './styles/common'
 PostInformation = require './post-information'
