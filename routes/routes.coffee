@@ -24,6 +24,9 @@ articleDB = new DBManager 'blog',
   createdAt   : Date
   updatedAt   : Date
 
+_pregQuote = (str, delimiter) ->
+  (str + '').replace(new RegExp('[.\\\\+*?\\[\\^\\]$(){}=!<>|:\\' + (delimiter || '') + '-]', 'g'), '\\$&')
+
 configRoutes = (app, passport) ->
   app.get '/', (req, res) ->
     res.render 'index', {}
@@ -75,7 +78,33 @@ configRoutes = (app, passport) ->
   app.get '/api/v1/read', (req, res) ->
     articleDB.read {
         sort : {'updatedAt':-1}
-        limit : 30
+        limit : 50
+      }
+      .then (docs) =>
+        console.log docs
+        res.json docs
+
+  app.get '/api/v1/search/:page/:word?', (req, res) ->
+    word = req.params.word
+    if word?
+      word = word.replace(/　/g," ")
+      words = word.split " "
+      condition = []
+      for w in words when w isnt ''
+        w = _pregQuote w
+        condition.push {title : new RegExp w, "i"}
+        condition.push {text : new RegExp w, "i"}
+
+    if condition.length is 0
+      q = {}
+    else
+      q = {$or : condition}
+
+    articleDB.search {
+        q : q
+        sort : {'updatedAt':-1}
+        limit : 50
+        page : req.params.page
       }
       .then (docs) =>
         console.log docs
