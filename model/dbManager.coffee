@@ -56,48 +56,12 @@ class DBManager
           d.resolve()
     d.promise
 
-  getItems : (params) ->
-    {page, limit, sort, word, author} = params
+  search : (params) ->
+    {page, limit, sort, q} = params
     limit ?= 10
-    sort ?= {}
-    condition = []
-    if word?
-      word = word.replace(/　/g," ")
-      words = word.split " "
-      titleCondition = for w in words when w isnt ''
-        w = @_pregQuote w
-        {title : new RegExp w, "i"}
-
-      if titleCondition.length is 1
-        condition.push titleCondition[0]
-      else if titleCondition.length > 1
-        condition.push {$and : titleCondition}
-
-    if author? and author isnt " "
-      author = @_pregQuote author
-      condition.push {author : new RegExp author, "i"}
-
-    if store? and store isnt " "
-      store = @_pregQuote store
-      condition.push {store : new RegExp store, "i"}
-
-    if category? and category isnt " "
-      category = @_pregQuote category
-      condition.push {category : new RegExp category, "i"}
-
-    condition.push {isEnable : true}
-    console.log condition
-    if condition.length is 0
-      q = {}
-    else if condition.length is 1
-      q = condition[0]
-    else
-      q = {$and : condition}
-
     skip = page * limit
     d = Q.defer()
     @_Model.find q
-      #.cache '60s'
       .limit limit
       .sort sort
       .skip skip
@@ -105,34 +69,12 @@ class DBManager
     d.promise
 
   delete : (id) ->
-    console.log "delete"
     d = Q.defer()
     @_Model.remove {_id: id}, (err) ->
       if err then d.reject err
       else d.resolve()
     d.promise
 
-  getNum : (query = {}) ->
-    d = Q.defer()
-    @_Model.count query
-      .count  (err, count) ->
-        if err
-          d.reject err
-        else
-          d.resolve count
-    d.promise
 
-
-  updateTime : (url, date) ->
-    d = Q.defer()
-    @_Model.findOneAndUpdate {url : url}, {$set: {updatedAt: date, isEnable : true}}, {new: true}
-      .exec (err, docs) ->
-        if err
-          console.log err
-          d.reject err
-        else
-          d.resolve()
-    d.promise
-
-# dbdriver
+    
 module.exports = DBManager

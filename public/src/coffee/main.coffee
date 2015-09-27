@@ -1,12 +1,13 @@
-window.React    = require 'react/addons'
-Fluxxor         = require 'fluxxor'
-ArticlesStore   = require './stores/article-store'
-ProfileStore    = require './stores/profile-store'
-PostFormStore   = require './stores/post-form-store'
-articleActions  = require './actions/articles-actions'
-profileActions  = require './actions/profile-actions'
-postFormActions = require './actions/post-form-actions'
-Blog            = require './components/blog'
+window.React     = require 'react/addons'
+Fluxxor          = require 'fluxxor'
+ArticlesStore    = require './stores/article-store'
+ProfileStore     = require './stores/profile-store'
+PostFormStore    = require './stores/post-form-store'
+articleActions   = require './actions/articles-actions'
+profileActions   = require './actions/profile-actions'
+postFormActions  = require './actions/post-form-actions'
+searchBoxActions = require './actions/search-box-actions'
+Blog             = require './components/blog'
 
 stores =
   ArticlesStore : new ArticlesStore()
@@ -14,9 +15,10 @@ stores =
   PostFormStore : new PostFormStore()
 
 actions =
-  article  : articleActions
-  profile  : profileActions
-  postForm : postFormActions
+  article   : articleActions
+  profile   : profileActions
+  postForm  : postFormActions
+  searchBox : searchBoxActions
 
 flux = new Fluxxor.Flux stores, actions
 
