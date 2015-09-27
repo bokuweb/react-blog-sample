@@ -1,7 +1,8 @@
-Fluxxor            = require 'fluxxor'
-jade               = require 'react-jade'
-_                  = require 'lodash'
-Radium             = require 'radium'
+Fluxxor        = require 'fluxxor'
+jade           = require 'react-jade'
+_              = require 'lodash'
+Radium         = require 'radium'
+searchBoxStyle = require './styles/search-box'
 
 FluxMixin = Fluxxor.FluxMixin React
 
@@ -13,8 +14,7 @@ SearchBox = React.createClass
 
   render : ->
     jade.compile("""
-      div
-        input(placeholder="search" value=search onChange=enterSearchWord)
+      input(placeholder="search" value=search onChange=enterSearchWord style=searchBoxStyle.search)
     """)(_.assign {}, @, @props)
 
 module.exports = Radium SearchBox
