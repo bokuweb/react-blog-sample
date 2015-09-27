@@ -1,3 +1,8 @@
+## v0.0.3
+- Implement incremental search
+- Implement syntax highlight
+- Implement real time preview
+
 ## v0.0.2
 - Implement real Time Preview
 - Implement delete animation
