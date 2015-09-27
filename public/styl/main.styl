@@ -20,17 +20,26 @@ textarea
   text-shadow  1px 1px 1px rgba(0, 0, 0, 0.004)
 
 
-.ReactModal__Overlay {
-  -webkit-perspective: 600;
-  perspective: 600;
-  opacity: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-}
+pre
+  width 80%
+  font-size 18px
+  background rgb(234, 229, 222)
+  border-radius 10px
+  overflow-x auto
+  padding 10px 10px 10px 20px
 
-.ReactModal__Overlay--after-open {
-  opacity: 1;
-  transition: opacity 150ms ease-out;
-}
+
+.ReactModal__Overlay
+  -webkit-perspective 600
+  perspective 600
+  opacity 0
+  overflow-x hidden
+  overflow-y auto
+  background-color rgba(0, 0, 0, 0.5)
+
+
+.ReactModal__Overlay--after-open
+  opacity 1
+  transition opacity 150ms ease-out
+
 

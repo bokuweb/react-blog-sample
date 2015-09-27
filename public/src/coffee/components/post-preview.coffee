@@ -1,6 +1,7 @@
 jade            = require 'react-jade'
 _               = require 'lodash'
 marked          = require 'marked'
+highlight       = require 'highlight.js'
 PostInformation = require './post-information'
 commonStyle     = require './styles/common'
 blogStyle       = require './styles/blog'
@@ -10,6 +11,8 @@ PostPreview = React.createClass
   render : ->
     option =
       renderer : new marked.Renderer()
+      highlight : (code, lang) ->
+        return highlight.highlightAuto(code, [lang]).value
       gfm : true
       tables : true
       breaks : true
@@ -26,11 +29,6 @@ PostPreview = React.createClass
       createdAt : now
       updatedAt : now
       author    : @props.author
-    #previewH1 =
-      #display : "inline-block"
-      #background : "#EAE5DE"
-      #padding : "5px 20px"
-      #borderRadius : "10px"
 
     jade.compile("""
       div.animated.fadeInUp(style=blogStyle.articles)

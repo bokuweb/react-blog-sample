@@ -1,7 +1,7 @@
 module.exports =
   article :
     lineHeight : "28px"
-    margin : "80px 0 0 0"
+    margin : "80px 0 0px 0"
     transition : "all 0.7s ease"
     height : "auto"
 
