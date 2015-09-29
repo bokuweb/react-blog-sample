@@ -44,6 +44,7 @@ configRoutes = (app, passport) ->
     console.dir req.body
     id = req.body._id
     return unless id
+    delete req.body._id 
     articleDB.findOneById id
       .then (doc) =>
         if doc.author is req.session.passport.user.username
