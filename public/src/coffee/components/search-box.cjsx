@@ -14,7 +14,7 @@ SearchBox = React.createClass
 
   render : ->
     jade.compile("""
-      input(placeholder="search" value=search onChange=enterSearchWord style=searchBoxStyle.search)
+      input(placeholder="search" onChange=enterSearchWord style=searchBoxStyle.search)
     """)(_.assign {}, @, @props)
 
 module.exports = Radium SearchBox
