@@ -1,3 +1,6 @@
+## v0.0.4
+- refactoing
+
 ## v0.0.3
 - Implement incremental search
 - Implement syntax highlight
