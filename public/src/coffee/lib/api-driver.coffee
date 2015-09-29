@@ -61,3 +61,13 @@ module.exports =
       success: (articles) => d.resolve articles
       error : (xhr, status, err) => d.reject err
     d.promise
+
+  profile : ->
+    d = Q.defer()
+    $.ajax
+      url: "/api/v1/profile"
+      dataType: 'json'
+      cache: false
+      success: (profile) => d.resolve profile
+      error : (xhr, status, err) =>  d.reject err
+    d.promise
