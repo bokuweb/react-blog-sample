@@ -46,4 +46,3 @@ gulp.task 'watch', ['enable-watch-mode', 'build:front', 'build:test'], ->
   gulp.watch ['*.coffee', '*/*.coffee'], ['build:server']
   gulp.watch ['public/styl/*.styl'], ['build:stylus']
 
-gulp.task 'default', ['build:server']
