@@ -25,6 +25,7 @@
     "express-session": "~1.11.3",
     "fluxxor": "~1.7.3",
     "highlight.js": "^8.8.0",
+    "jquery": "^2.1.4",
     "lodash": "^3.10.1",
     "marked": "^0.3.5",
     "moment": "^2.10.6",

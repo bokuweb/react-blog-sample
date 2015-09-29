@@ -37,13 +37,14 @@ Article = React.createClass
       title =  @props.article.title
 
     # set delted style if post deleted
-    style = if @props.article.isDeletedy
+    style = if @props.article.isDeleted
       [articleStyle.article, articleStyle.articleDeleted]
     else articleStyle.article
 
     hiddenUnlessAuthor = if @props.article._id? and @props.article.author is @props.username
       {margin: "30px 0 0 0"}
     else commonStyle.hidden
+
     jade.compile("""
       div(style=style)
         div.animated.fadeInUp
