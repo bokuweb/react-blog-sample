@@ -12,7 +12,8 @@ PostPreview = React.createClass
     option =
       renderer : new marked.Renderer()
       highlight : (code, lang) ->
-        return highlight.highlightAuto(code, [lang]).value
+        if lang?
+          return highlight.highlightAuto(code, [lang]).value
       gfm : true
       tables : true
       breaks : true
