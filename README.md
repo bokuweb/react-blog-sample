@@ -6,6 +6,10 @@ This repository is heavily under development and unstable.
 
 ![](/screenshot/screenshot.png)
 
+## DEMO
+
+http://react-bokuweb.rhcloud.com/
+
 ## Development
 
 ### Install Node modules.
